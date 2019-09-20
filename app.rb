@@ -1,33 +1,27 @@
-# require 'httparty'
+require 'httparty'
 require 'json'
+require 'pry-remote'
 
-def lambda_handler(event:, context:)
-  # Sample pure Lambda function
+require_relative 'lib/item'
 
-  # Parameters
-  # ----------
-  # event: Hash, required
-  #     API Gateway Lambda Proxy Input Format
-  #     Event doc: https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-lambda-proxy-integrations.html#api-gateway-simple-proxy-for-lambda-input-format
+def init
+  return if $initialized
 
-  # context: object, required
-  #     Lambda Context runtime methods and attributes
-  #     Context doc: https://docs.aws.amazon.com/lambda/latest/dg/ruby-context.html
+  $nypl_core = NyplCore.new
 
-  # Returns
-  # ------
-  # API Gateway Lambda Proxy Output Format: dict
-  #     'statusCode' and 'body' are required
-  #     # api-gateway-simple-proxy-for-lambda-output-format
-  #     Return doc: https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-lambda-proxy-integrations.html
+  $initialized = true
+end
 
-  # begin
-  #   response = HTTParty.get('http://checkip.amazonaws.com/')
-  # rescue HTTParty::Error => error
-  #   puts error.inspect
-  #   raise error
-  # end
+def mock_event(nypl_source, id)
+  init
 
+  item = item.new(nypl_source, id)
+  return item.is_research
+end
+
+def handle_event(event:, context:)
+  init
+  # get_discovery_response("https://platform.nypl.org/api/v0.1/items?limit=1", key)
   {
     statusCode: 200,
     body: {
@@ -36,3 +30,12 @@ def lambda_handler(event:, context:)
     }.to_json
   }
 end
+
+def get_discovery_response(url, auth)
+
+  binding.pry
+end
+
+
+
+# get_discovery_response("https://platform.nypl.org/api/v0.1/items?limit=1", key)
