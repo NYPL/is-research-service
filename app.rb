@@ -3,11 +3,15 @@ require 'json'
 require 'pry-remote'
 
 require_relative 'lib/item'
+require_relative 'lib/platform_api_client'
+require_relative 'lib/kms_client'
+require_relative 'lib/nypl_core'
 
 def init
   return if $initialized
 
   $nypl_core = NyplCore.new
+  $platform_api = PlatformApiClient.new
 
   $initialized = true
 end
@@ -31,11 +35,11 @@ def handle_event(event:, context:)
   }
 end
 
-def get_discovery_response(url, auth)
+sierra = 'sierra-nypl'
+pul = 'recap-pul'
 
-  binding.pry
-end
+item = Item.new(pul, "17746307")
 
+puts item.is_research
 
-
-# get_discovery_response("https://platform.nypl.org/api/v0.1/items?limit=1", key)
+mock_event(pul, "17746307")
