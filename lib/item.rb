@@ -34,6 +34,8 @@ class Item
     end
 
     def get_item_type_and_location_type
+      puts @nypl_source
+      puts @id
       response = $platform_api.get("items/" + @nypl_source + "/" + @id)
 
       raise "Invalid identifiers" if response.nil? || response["data"].nil?

@@ -1,6 +1,7 @@
 require 'httparty'
 require 'json'
-require 'pry-remote'
+require 'pry'
+require 'nypl_log_formatter'
 
 require_relative 'lib/item'
 require_relative 'lib/platform_api_client'
@@ -11,35 +12,37 @@ def init
   return if $initialized
 
   $nypl_core = NyplCore.new
+  $logger = NyplLogFormatter.new(STDOUT, level: ENV['LOG_LEVEL'] || 'info')
   $platform_api = PlatformApiClient.new
+
 
   $initialized = true
 end
 
-def mock_event(nypl_source, id)
-  init
-
-  item = item.new(nypl_source, id)
-  return item.is_research
-end
-
 def handle_event(event:, context:)
   init
-  # get_discovery_response("https://platform.nypl.org/api/v0.1/items?limit=1", key)
-  {
-    statusCode: 200,
-    body: {
-      message: "Hello World!",
-      # location: response.body
-    }.to_json
-  }
+
+  nypl_source = event["pathParameters"]["nypl_source"]
+  id = event["pathParameters"]["id"]
+
+  puts event["pathParameters"]
+  puts id
+
+  item = Item.new(nypl_source, id)
+
+  return handle_is_research(item)
 end
 
-sierra = 'sierra-nypl'
-pul = 'recap-pul'
+def handle_is_research(item)
+  begin
 
-item = Item.new(pul, "17746307")
+    respond 200, { success: true, result: item.is_research}
+  rescue StandardError => e
+    respond 400, message: e.message
+  end
+end
 
-puts item.is_research
-
-mock_event(pul, "17746307")
+def respond(statusCode = 200, body = nil)
+  $logger.debug("Responding with #{statusCode}", body)
+  { statusCode: statusCode, body: body.to_json, headers: { "Content-type": "application/json" } }
+end
