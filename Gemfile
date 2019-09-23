@@ -2,11 +2,19 @@ source "https://rubygems.org"
 
 gem "httparty"
 
+gem 'nypl_log_formatter', '~> 0.1.2'
+
+# gem 'aws-sdk'
+
 group :test do
   gem "test-unit"
   gem "mocha"
+  gem 'rspec'
+  gem 'webmock'
 end
 
-gem "pry", "~> 0.12.2", :group => :DEVELOPMENT
-
-gem "pry-remote", "~> 0.1.8"
+group :DEVELOPMENT do
+  gem "pry"
+  gem "dotenv"
+  gem "pry-remote"
+end

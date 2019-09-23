@@ -3,7 +3,7 @@ require "pry"
 
 class Item
   attr_reader :nypl_source, :id
-  attr_accessor :item_type, :location
+  attr_accessor :item_type_code, :location_code
 
   def initialize(nypl_source, id) # will come from URL
     @nypl_source = nypl_source
@@ -24,27 +24,22 @@ class Item
     end
 
     def item_type_is_research
-
+      item_collection_type = $nypl_core.by_catalog_item_type[item_type_code]
+      return item_collection_type["collectionType"][0] == "Research"
     end
 
     def location_is_research
-      collection_types = $nypl_core.by_sierra_location[location_type]["collectionTypes"]
-      return collection_types.length == 1 && collectionTypes[0] == "Research"
+      collection_types = $nypl_core.by_sierra_location[location_code]["collectionTypes"]
+      return collection_types.length == 1 && collection_types[0] == "Research"
     end
 
     def get_item_type_and_location_type
-      data = HTTParty.get('https://platform.nypl.org/api/v0.1/items/' + nypl_source + "/" + id, headers: {
-        "authorization" => auth
-        }
-      )["data"]
-      item_type = data["fixedFields"]["61"]["value"]
-      location = data["location"]["code"]
+      response = $platform_api.get("items/" + @nypl_source + "/" + @id)
+
+      raise "Invalid identifiers" if response.nil? || response["data"].nil?
+
+      data = response["data"]
+      self.item_type_code = data["fixedFields"]["61"]["value"]
+      self.location_code = data["location"]["code"]
     end
 end
-
-# sierra = 'sierra-nypl'
-# pul = 'recap-pul'
-#
-# item = Item.new(pul, "17746307")
-#
-# puts item.is_research
