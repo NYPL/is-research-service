@@ -5,17 +5,15 @@ class Item
   attr_reader :nypl_source, :id
   attr_accessor :item_type_code, :location_code
 
-  def initialize(nypl_source, id) # will come from URL
+  def initialize(nypl_source, id)
     @nypl_source = nypl_source
     @id = id
   end
 
   def is_research
-    return true if is_partner
+    get_platform_api_data
 
-    get_item_type_and_location_type
-
-    item_type_is_research || location_is_research
+    is_partner || item_type_is_research || location_is_research
   end
 
   private
@@ -33,14 +31,15 @@ class Item
       return collection_types.length == 1 && collection_types[0] == "Research"
     end
 
-    def get_item_type_and_location_type
-      puts @nypl_source
-      puts @id
+    def get_platform_api_data
       response = $platform_api.get("items/" + @nypl_source + "/" + @id)
 
       raise "Invalid identifiers" if response.nil? || response["data"].nil?
 
       data = response["data"]
+
+      return if is_partner
+
       self.item_type_code = data["fixedFields"]["61"]["value"]
       self.location_code = data["location"]["code"]
     end
