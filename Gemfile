@@ -4,7 +4,7 @@ gem "httparty"
 
 gem 'nypl_log_formatter', '~> 0.1.2'
 
-# gem 'aws-sdk'
+gem 'aws-sdk-kms'
 
 group :test do
   gem "test-unit"

@@ -25,9 +25,6 @@ def handle_event(event:, context:)
   nypl_source = event["pathParameters"]["nypl_source"]
   id = event["pathParameters"]["id"]
 
-  puts event["pathParameters"]
-  puts id
-
   item = Item.new(nypl_source, id)
 
   return handle_is_research(item)
@@ -36,7 +33,7 @@ end
 def handle_is_research(item)
   begin
 
-    respond 200, { success: true, result: item.is_research}
+    respond 200, { is_research: item.is_research }
   rescue StandardError => e
     respond 400, message: e.message
   end

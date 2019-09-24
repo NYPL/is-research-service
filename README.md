@@ -1,6 +1,9 @@
 # is-research
 
-```sam local invoke --event events/event.json --region us-east-1 --template template.yaml --profile nypl-digital-dev
+```sam local invoke --event event.json --region us-east-1 --template sam.local.yml --profile nypl-digital-dev
+```
+
+```sam local start-api --region us-east-1 --template sam.local.yml --profile nypl-digital-dev
 ```
 
 This project contains source code and supporting files for a serverless application that you can deploy with the SAM CLI. It includes the following files and folders.
