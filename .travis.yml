@@ -9,7 +9,7 @@ script:
 deploy:
 - provider: lambda
   function_name: IsResearch-qa
-  description: "A small service for determining if an item is research"
+  description: A small service for determining if an item is research
   region: us-east-1
   role: arn:aws:iam::946183545209:role/lambda-full-access
   runtime: ruby2.5
@@ -27,7 +27,7 @@ deploy:
     branch: qa
 - provider: lambda
   function_name: IsResearch-production
-  description: "A small service for queuing metadata sync requests to SCSB"
+  description: A small service for queuing metadata sync requests to SCSB
   region: us-east-1
   role: arn:aws:iam::946183545209:role/lambda-full-access
   runtime: ruby2.5
@@ -49,3 +49,6 @@ notifications:
 env:
   global:
   - AWS_DEFAULT_REGION=us-east-1
+  - secure: FdD3jUOAwecLLF5DCl52aQZP8OwvnJGwkIfSIciZnKa/sfoE7bfcSV+udlhQUz4Wf4VymOaU4PxmSKxvhO48T30u1/GGpjOBrjDd69Ls1MOcAupqUf+2O2JreNLJvkotFKbPVA9P9c3VyxdTxO9LkHbtgM5vvv5UcJZhif1INk6meu1Pciiww5xrCiXdCJWp+yylg/v9lbOS5kVWgqFWl0auwtLqw7ycQWHEEBEOn8rdHC729Kjv+WDugWfsicsCHg/ot6CBDorw20puhUnIqCYTcEdzkm6WqMYZkkA39ubiQGvPZ+lYo098iOjpEL3uQYAXZN7qyHsdmnsB89yXLdmPwrEIhPCanCBc0Y5b+Vtqt4/scZ3OdKrIoaKqC4gHzyejqU3jSj0tiXAg4h0D4t5cxWn1IcyFMNuqNOTo27rOHDfFx17+6ETy49ACQ04mBzQV86VNPbBGsIGmjV/fKozS7yCzy1xKJn26uxkrdQuYTSkluGTHTN1g1fCdqC7Rb9x8/hcmNmwGpigXWc2tNBNlhNHc+iDOmlqiFv9nA+OV6cY1jOHOxwfibsjlTKsjSbJBvwENJt7XBus2Qg4KiijmkWExr1RY3wUZoWwe0l7kLeLh4A9SH/Z5yBL1PuQaVIpooZ3HQDa4yXKj6UTwVKt+KV+i+cRzU0c7VSeTi/o=
+  - secure: L3G+DCHgcNv43m9rE/BHUS9ZxbA2ItEx+uvITDbtVvfkh1b2NYBmp+1toxOWFjoDqJ6xxUWK74nUeT8zlFBIbYswICrkt7BP04E+aMUV0eVAdQPlXPAuXK1H0bpYwcl2DhO4FN2KpnwrgJGn87Nuh3uSKMPyRAi1KfUNDgiWPfZFnSXfpNKcXgW6Nyq3WPoLnFpckfLBhXSaR9qfLLT3ay3dscb+/hmVyxoFk6wlEZac/vHvy4bnfYOIHOxnK7KTx/sQrHxVMr3ihP0Frt4hFaByCZozKkl0dwQXcYEcgGZkievhnEKL38n/mrYiJheJG1AHfyR/TCfF900QHKql3WtYKxEJatyYD5jDurAy+aPGDJDrTmc3VkQeedDmyjnIAyHjZPvuAi9YfvKZk8mvjszN7KICkwYIQwivoI55F48TQfJTeh3VEeJ2mM38cMNySwy0j3MoDovMgvoHLk8cjGfF+uwKbp6xKwanWzEvTYXwqrY1twcrcqt6eWqQjo1HttW1+UVdcebk/Rf5gnugMSr3UvKGqcjw22WFmUEPhE8pPs68UanNaxYpcEPGzwV2qM1REEYT8MuD+YKEPeuNzB24jOQ2rTlup07UmVzdf4gAywthDZXVSdOk3rPFkmmoGsmHvLRjsI5tL3Qujy2djS9yndbmVn35bhzZfEWRyoI=
+  - secure: mm2DDBkAlXj8r4qbJ+x2+G1JtmlNzkcVArjTtsMifGlLLMwd9AZ7g7KsWhZ89A1Fc/inbBhGWjdXFvOD1aT7HPjqZsllkd0X0PqF5XTZ8tPgjnQHIufCWe5Rudv4Mubzdt9H/lBjwIFqAFFwHGDTProiFhGlrL0dInSeYTxODucJZZsy9fEdIPXRrDohvI8NeSjfZCJFDKqAbjFTQ4ntHQKgzu4twaKX6G9jEKzEBzKnCKw5aOv6Sx7cv8vh09MZrkCU5JRaPTecasypDxMm5dStflmHyueMA4dgWl9PLsJziIUEDbrHYuiN9QLAqJHPh3OuQsSRJKvI30A/sqHXG3zaaE5uxVXJGqaX1yt/yYFQrZPQSu2kg3nO6AoneZ6JfUIgPZbf0S1YgzEac4QPqQl4CoTyvvmZlYZZk6uACsYgsF/KU9EogIAuObX8LquXCoqs+p8kmTqFQeAmI7VLRnt54WCqd4LAlOoKQaO7EeUYlQCuI1I7BmSehA6owsw6tIJaeQLzmVtRheUFKAhbr2k5/znpZYHVbXYRgDlnzdHl7KuAT7vk1ljU+eLh4qh5idTvOgq0ww3Dp8wq8DhFDH2TPogZspFNrRk5T6ayBf7OJclqt3hz32YY+jjomedpOZTVvDwgnR9OZRDHS/h57b45YN3qSs93xq//M/JBM2I=
