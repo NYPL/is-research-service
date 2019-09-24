@@ -26,7 +26,7 @@ deploy:
   on:
     branch: qa
 - provider: lambda
-  function_name: SyncItemMetadataToScsbService-production
+  function_name: IsResearch-production
   description: "A small service for queuing metadata sync requests to SCSB"
   region: us-east-1
   role: arn:aws:iam::946183545209:role/lambda-full-access
