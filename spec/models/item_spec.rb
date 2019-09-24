@@ -18,6 +18,7 @@ describe Item do
     ENV['NYPL_OAUTH_ID'] = Base64.strict_encode64 'fake-client'
     ENV['NYPL_OAUTH_SECRET'] = Base64.strict_encode64 'fake-secret'
     ENV['NYPL_OAUTH_URL'] = 'https://isso.example.com/'
+    ENV['NYPL_CORE_S3_BASE_URL'] = 'https://example.com/'
 
     $platform_api = PlatformApiClient.new
     $nypl_core = NyplCore.new
@@ -29,24 +30,10 @@ describe Item do
 
     $logger = NyplLogFormatter.new(STDOUT, level: ENV['LOG_LEVEL'] || 'info')
 
-    stub_request(:get, "https://s3.amazonaws.com/nypl-core-objects-mapping-production/by_catalog_item_type.json")
-    .with(
-      headers: {
-       	'Accept'=>'*/*',
-       	'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-       	'User-Agent'=>'Ruby'
-      }
-    )
+    stub_request(:get, ENV['NYPL_CORE_S3_BASE_URL'] + "by_catalog_item_type.json")
     .to_return(status: 200, body: File.read("./spec/fixtures/by_catalog_item_type.json"))
 
-    stub_request(:get, "https://s3.amazonaws.com/nypl-core-objects-mapping-production/by_sierra_location.json")
-    .with(
-      headers: {
-     	  'Accept'=>'*/*',
-     	  'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-     	  'User-Agent'=>'Ruby'
-      }
-    )
+    stub_request(:get, ENV['NYPL_CORE_S3_BASE_URL'] + "by_sierra_location.json")
     .to_return(status: 200, body: File.read("./spec/fixtures/by_sierra_location.json"), headers: {})
 
     stub_request(:post, "#{ENV['NYPL_OAUTH_URL']}oauth/token").to_return(status: 200, body: '{ "access_token": "fake-access-token" }')

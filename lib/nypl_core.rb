@@ -16,7 +16,7 @@ class NyplCore
 
   # private
     def by_mapping (mapping_file)
-      @mappings[mapping_file] = JSON.parse(open("https://s3.amazonaws.com/nypl-core-objects-mapping-production/#{mapping_file}").read) if @mappings[mapping_file].nil?
+      @mappings[mapping_file] = JSON.parse(open(ENV['NYPL_CORE_S3_BASE_URL'] + mapping_file).read) if @mappings[mapping_file].nil?
       @mappings[mapping_file]
     end
 end
