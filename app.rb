@@ -1,38 +1,45 @@
-# require 'httparty'
+require 'httparty'
 require 'json'
+require 'pry'
+require 'nypl_log_formatter'
 
-def lambda_handler(event:, context:)
-  # Sample pure Lambda function
+require_relative 'lib/item'
+require_relative 'lib/platform_api_client'
+require_relative 'lib/kms_client'
+require_relative 'lib/nypl_core'
 
-  # Parameters
-  # ----------
-  # event: Hash, required
-  #     API Gateway Lambda Proxy Input Format
-  #     Event doc: https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-lambda-proxy-integrations.html#api-gateway-simple-proxy-for-lambda-input-format
+def init
+  return if $initialized
 
-  # context: object, required
-  #     Lambda Context runtime methods and attributes
-  #     Context doc: https://docs.aws.amazon.com/lambda/latest/dg/ruby-context.html
+  $nypl_core = NyplCore.new
+  $logger = NyplLogFormatter.new(STDOUT, level: ENV['LOG_LEVEL'] || 'info')
+  $platform_api = PlatformApiClient.new
 
-  # Returns
-  # ------
-  # API Gateway Lambda Proxy Output Format: dict
-  #     'statusCode' and 'body' are required
-  #     # api-gateway-simple-proxy-for-lambda-output-format
-  #     Return doc: https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-lambda-proxy-integrations.html
 
-  # begin
-  #   response = HTTParty.get('http://checkip.amazonaws.com/')
-  # rescue HTTParty::Error => error
-  #   puts error.inspect
-  #   raise error
-  # end
+  $initialized = true
+end
 
-  {
-    statusCode: 200,
-    body: {
-      message: "Hello World!",
-      # location: response.body
-    }.to_json
-  }
+def handle_event(event:, context:)
+  init
+
+  nypl_source = event["pathParameters"]["nypl_source"]
+  id = event["pathParameters"]["id"]
+
+  item = Item.new(nypl_source, id)
+
+  return handle_is_research(item)
+end
+
+def handle_is_research(item)
+  begin
+
+    respond 200, { is_research: item.is_research }
+  rescue StandardError => e
+    respond 400, message: e.message
+  end
+end
+
+def respond(statusCode = 200, body = nil)
+  $logger.debug("Responding with #{statusCode}", body)
+  { statusCode: statusCode, body: body.to_json, headers: { "Content-type": "application/json" } }
 end

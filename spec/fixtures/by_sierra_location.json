@@ -1,0 +1,14 @@
+{
+  "bca0v": {
+    "code": "bca0v",
+    "label": "Bronx Library Center Non-Print Media",
+    "locationsApiSlug": null,
+    "collectionTypes": [
+      "Branch"
+    ],
+    "recapLocation": null,
+    "sierraDeliveryLocations": [],
+    "requestable": false,
+    "deliveryLocationTypes": []
+  }
+}
