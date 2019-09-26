@@ -9,7 +9,7 @@ def mock_event(nypl_source, id)
 
   item = Item.new(nypl_source, id)
 
-  return item.is_research
+  return item.is_research?
 end
 
 sierra = 'sierra-nypl'

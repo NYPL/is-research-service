@@ -15,7 +15,6 @@ Resources:
             Method: get
             Request:
               Parameters:
-                Paths:
                   Nypl_source: true
                   Id: true
       Runtime: ruby2.5

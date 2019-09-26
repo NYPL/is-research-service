@@ -33,7 +33,7 @@ end
 def handle_is_research(item)
   begin
 
-    respond 200, { is_research: item.is_research }
+    respond 200, { is_research: item.is_research? }
   rescue StandardError => e
     respond 400, message: e.message
   end
