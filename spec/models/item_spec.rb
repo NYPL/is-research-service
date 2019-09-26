@@ -72,20 +72,24 @@ describe Item do
       expect(test_item[:item].is_research?).to eq(test_item[:result])
     end
 
-    xit "should declare an item whose location has collectionType 'Research' (only) to be research" do
-
+    it "should declare an item whose location has collectionType 'Research' (only) to be research" do
+      test_item = test_items[2]
+      expect(test_item[:item].is_research?).to eq(test_item[:result])
     end
 
-    xit "should declare an item whose location has collectionType 'Research' and 'Branch' and item type with collectionType 'Research' as research" do
-
+    it "should declare an item whose location has collectionType 'Research' and 'Branch' and item type with collectionType 'Research' as research" do
+      test_item = test_items[3]
+      expect(test_item[:item].is_research?).to eq(test_item[:result])
     end
 
-    xit "should declare an item whose location has collectionType 'Research' and 'Branch' and item type with collectionType 'Research' and 'Branch' as research" do
-
+    it "should declare an item whose location has collectionType 'Research' and 'Branch' and item type with collectionType 'Research' and 'Branch' as research" do
+      test_item = test_items[4]
+      expect(test_item[:item].is_research?).to eq(test_item[:result])
     end
 
-    xit "should declare an item whose location has collectionType 'Research' and 'Branch' and item type with collectionType 'Branch' as not research" do
-
+    it "should declare an item whose location has collectionType 'Research' and 'Branch' and item type with collectionType 'Branch' as not research" do
+      test_item = test_items[5]
+      expect(test_item[:item].is_research?).to eq(test_item[:result])
     end
   end
 end

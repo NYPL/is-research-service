@@ -13,13 +13,13 @@ class Item
   def is_research?
     get_platform_api_data
 
-    result = is_partner? || item_type_is_research? || location_is_research?
+    result = is_partner? || item_type_is_research? || location_is_only_research?
 
     log_data = {is_partner: is_partner?}
 
     if !is_partner?
       log_data[:item_type_is_research] = item_type_is_research?
-      log_data[:location_is_research] = location_is_research?
+      log_data[:location_is_only_research] = location_is_only_research?
     end
 
     $logger.debug "Evaluating is-research for #{nypl_source} #{id}: #{result}", log_data
@@ -34,10 +34,10 @@ class Item
 
     def item_type_is_research?
       item_collection_type = $nypl_core.by_catalog_item_type[item_type_code]
-      return item_collection_type["collectionType"][0] == "Research"
+      return item_collection_type["collectionType"].include?("Research")
     end
 
-    def location_is_research?
+    def location_is_only_research?
       collection_types = $nypl_core.by_sierra_location[location_code]["collectionTypes"]
       return collection_types.length == 1 && collection_types[0] == "Research"
     end

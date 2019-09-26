@@ -5,10 +5,11 @@ require_relative '../lib/platform_api_client'
 require_relative '../lib/kms_client'
 require_relative '../lib/item'
 require_relative '../lib/nypl_core'
+require_relative '../app.rb'
 
-ENV['LOG_LEVEL'] ||= 'error'
-ENV['APP_ENV'] = 'test'
+$kms_client = KmsClient.aws_kms_client.stub_responses(:decrypt, -> (context) {
+  # "Decrypt" by subbing "encrypted" with "decrypted" in string:
+  { plaintext: context.params[:ciphertext_blob].gsub('encrypted', 'decrypted') }
+})
 
-def load_fixture (file)
-  JSON.parse File.read("./spec/fixtures/#{file}")
-end
+$logger = NyplLogFormatter.new(STDOUT, level: ENV['LOG_LEVEL'] || 'info')
