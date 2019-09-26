@@ -4,13 +4,29 @@ require 'webmock/rspec'
 describe Item do
   test_items = [
     {
-      item: Item.new("sierra-nypl", "37314241"),
+      item: Item.new("sierra-nypl", "37314241"),  # item type and location are branch
       result: false
     },
     {
-      item: Item.new("recap-pul", "6739525"),
+      item: Item.new("recap-pul", "6739525"), # partner item
       result: true
     },
+    {
+      item: Item.new("sierra-nypl", "10002559"), # collectionType is only 'Research'
+      result: true
+    },
+    {
+      item: Item.new("sierra-nypl", "26085395"), # collectionType is both 'Research' and 'Branch'; item collectionType 'Research'
+      result: true
+    },
+    {
+      item: Item.new("sierra-nypl", "F17903918"), # fake record to reflect collectionType is both and item type is both
+      result: true
+    },
+    {
+      item: Item.new("sierra-nypl", "F16398857"), # fake record to reflect collectionType is both and item type is 'Branch'
+      result: false
+    }
   ]
 
   before(:each) do
@@ -45,15 +61,31 @@ describe Item do
     end
   end
 
-  describe "#is_research" do
+  describe "#is_research?" do
     it "should declare partner items as research" do
-      item = test_items[1][:item]
-      expect(item.is_research).to eq(true)
+      test_item = test_items[1]
+      expect(test_item[:item].is_research?).to eq(test_item[:result])
     end
 
     it "should declare branch items as not research" do
-      item = test_items[0][:item]
-      expect(item.is_research).to eq(false)
+      test_item = test_items[0]
+      expect(test_item[:item].is_research?).to eq(test_item[:result])
+    end
+
+    xit "should declare an item whose location has collectionType 'Research' (only) to be research" do
+
+    end
+
+    xit "should declare an item whose location has collectionType 'Research' and 'Branch' and item type with collectionType 'Research' as research" do
+
+    end
+
+    xit "should declare an item whose location has collectionType 'Research' and 'Branch' and item type with collectionType 'Research' and 'Branch' as research" do
+
+    end
+
+    xit "should declare an item whose location has collectionType 'Research' and 'Branch' and item type with collectionType 'Branch' as not research" do
+
     end
   end
 end
