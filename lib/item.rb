@@ -13,7 +13,18 @@ class Item
   def is_research?
     get_platform_api_data
 
-    is_partner? || item_type_is_research? || location_is_research?
+    result = is_partner? || item_type_is_research? || location_is_research?
+
+    log_data = {is_partner: is_partner?}
+
+    if !is_partner?
+      log_data[:item_type_is_research] = item_type_is_research?
+      log_data[:location_is_research] = location_is_research?
+    end
+
+    $logger.debug "Evaluating is-research for #{nypl_source} #{id}: #{result}", log_data
+
+    return result
   end
 
   private
@@ -34,7 +45,9 @@ class Item
     def get_platform_api_data
       response = $platform_api.get("items/" + @nypl_source + "/" + @id)
 
-      raise "Invalid identifiers" if response.nil? || response["data"].nil?
+      raise ParameterError.new(response["message"]) if response["data"].nil?
+
+      # raise "Invalid identifiers" if response.nil? || response["data"].nil?
 
       data = response["data"]
 
