@@ -51,17 +51,16 @@ class Item
     end
 
     def get_platform_api_data
-      response = $platform_api.get("items/" + @nypl_source + "/" + @id)
+      begin
+        response = $platform_api.get("items/" + @nypl_source + "/" + @id)
+        data = response["data"]
 
-      raise ParameterError.new(response["message"]) if response["data"].nil?
+        return if is_partner?
 
-      # raise "Invalid identifiers" if response.nil? || response["data"].nil?
-
-      data = response["data"]
-
-      return if is_partner?
-
-      self.item_type_code = data["fixedFields"]["61"]["value"]
-      self.location_code = data["location"]["code"]
+        self.item_type_code = data["fixedFields"]["61"]["value"]
+        self.location_code = data["location"]["code"]
+      rescue => e
+        raise ParameterError.new(response["message"])
+      end
     end
 end
