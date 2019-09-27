@@ -8,7 +8,7 @@ install:
 cache:
 - bundler
 script:
-- bundle exec rspec -fd
+- bundle exec rspec
 deploy:
 - provider: lambda
   function_name: IsResearchService-qa

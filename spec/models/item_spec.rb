@@ -26,6 +26,10 @@ describe Item do
     {
       item: Item.new("sierra-nypl", "F16398857"), # fake record to reflect collectionType is both and item type is 'Branch'
       result: false
+    },
+    {
+      item: Item.new("sierra-nypl", "36387834"), # real ID but unknown location_code and item_type_code
+      result: false
     }
   ]
 
@@ -90,6 +94,11 @@ describe Item do
     it "should declare an item whose location has collectionType 'Research' and 'Branch' and item type with collectionType 'Branch' as not research" do
       test_item = test_items[5]
       expect(test_item[:item].is_research?).to eq(test_item[:result])
+    end
+
+    it "should log unknown item_type_code and location_code and return false" do
+      test_item = test_items[6]
+      test_item[:item].is_research?
     end
   end
 end

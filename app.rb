@@ -34,11 +34,11 @@ end
 
 def handle_is_research(item)
   begin
-    respond 200, { nypl_source: item.nypl_source, id: item.id, isResearch: item.is_research? }
+    respond 200, { nyplSource: item.nypl_source, id: item.id, isResearch: item.is_research? }
   rescue ParameterError => e
     respond 404, message: "ParameterError: #{e.message}"
   rescue => e
-    respond 500, message: e.message
+    respond 400, message: e.message
   end
 end
 

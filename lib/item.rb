@@ -15,31 +15,39 @@ class Item
 
     result = is_partner? || item_type_is_research? || location_is_only_research?
 
-    log_data = {is_partner: is_partner?}
-
-    if !is_partner?
-      log_data[:item_type_is_research] = item_type_is_research?
-      log_data[:location_is_only_research] = location_is_only_research?
-    end
-
-    $logger.debug "Evaluating is-research for #{nypl_source} #{id}: #{result}", log_data
+    $logger.debug "Evaluating is-research for #{nypl_source} #{id}: #{result}", $log_data
 
     return result
   end
 
   private
     def is_partner?
-      nypl_source == "recap-cul" || nypl_source == "recap-pul"
+      result = nypl_source == "recap-cul" || nypl_source == "recap-pul"
+      $log_data = {is_partner?: result}
+      return result
     end
 
     def item_type_is_research?
       item_collection_type = $nypl_core.by_catalog_item_type[item_type_code]
-      return item_collection_type["collectionType"].include?("Research")
+      if item_collection_type.nil?
+        $logger.debug "Unknown item_type #{item_type_code}"
+        return false
+      end
+      result = item_collection_type["collectionType"].include?("Research")
+      $log_data[:item_type_is_research?] = result
+      return result
     end
 
     def location_is_only_research?
-      collection_types = $nypl_core.by_sierra_location[location_code]["collectionTypes"]
-      return collection_types.length == 1 && collection_types[0] == "Research"
+      sierra_location = $nypl_core.by_sierra_location[location_code]
+      if sierra_location.nil?
+        $logger.debug "Unknown location_code #{location_code}"
+        return false
+      end
+      collection_types = sierra_location["collectionTypes"]
+      result = collection_types == ["Research"]
+      $log_data[:location_is_only_research] = result
+      return result
     end
 
     def get_platform_api_data

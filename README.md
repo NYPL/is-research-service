@@ -13,6 +13,14 @@ This is a Ruby app deployed as an AWS Lambda behind API Gateway to serve:
 All config is in sam.[ENVIRONMENT].yml templates, encrypted as necessary.
 
 ## Contributing
+### Git Workflow
+ * Cut branches from `development`.
+ * Create PR against `development`.
+ * After review, PR author merges.
+ * Merge `development` > `qa`
+ * Merge `qa` > `master`
+ * Tag version bump in `master`
+
 ### Running Events Locally
 The following will invoke the lambda against the sample event.json
 
@@ -31,3 +39,6 @@ Given that gems are installed with the --deployment flag, Bundler will complain 
 ## Testing
 
 ``bundle exec rspec -fd``
+
+## Deploy
+Deployments are entirely handled by Travis-ci.com. To deploy to development, qa, or production, commit code to the development, qa, and master branches on origin, respectively.
