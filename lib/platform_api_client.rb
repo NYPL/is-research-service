@@ -39,7 +39,7 @@ class PlatformApiClient
       parse_json_response response
 
     rescue Exception => e
-      raise StandardError.new(e), "Failed to retrieve #{path} schema: #{e.message}"
+      raise StandardError.new(e), "Failed to retrieve #{path} #{e.message}"
     end
   end
 

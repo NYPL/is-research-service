@@ -90,9 +90,9 @@ describe Item do
       expect(test_item[:item].is_research?).to eq(test_item[:result])
     end
 
-    it "should log unknown item_type_code and location_code and return false" do
+    it "should throw DataError for unknown item_type_code and/or location_code" do
       test_item = test_items[6]
-      test_item[:item].is_research?
+      expect(test_item[:item].is_research?).to raise_error(DataError)
     end
   end
 end

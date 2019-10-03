@@ -3,3 +3,9 @@ class ParameterError < StandardError
     super
   end
 end
+
+class DataError < StandardError
+  def initialize(msg="DataError")
+    super
+  end
+end
