@@ -5,7 +5,13 @@ class ParameterError < StandardError
 end
 
 class DataError < StandardError
-  def initialize(msg="DataError")
+  def initialize(msg="Data Error")
+    super
+  end
+end
+
+class NotFoundError < StandardError
+  def initialize(msg="Record not found")
     super
   end
 end

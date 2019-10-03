@@ -37,6 +37,6 @@ describe 'app' do
 
     expect(response).to be_a(Object)
     expect(response[:statusCode]).to eq(404)
-    expect(lamba_resp["message"]).to eq("ParameterError: No record found")
+    expect(lamba_resp["message"]).to eq("NotFoundError: Record not found")
   end
 end
