@@ -39,7 +39,7 @@ def handle_is_research(event)
     item = Item.new(nypl_source, id)
     respond 200, { nyplSource: item.nypl_source, id: item.id, isResearch: item.is_research? }
   rescue ParameterError => e
-    respond 404, message: "ParameterError: #{e.message}"
+    respond 400, message: "ParameterError: #{e.message}"
   rescue NotFoundError => e
     respond 404, message: "NotFoundError: #{e.message}"
   rescue DataError => e
