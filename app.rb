@@ -22,7 +22,22 @@ end
 def handle_event(event:, context:)
   init
 
-  return handle_is_research(event)
+  path = event["path"]
+  method = event["httpMethod"].downcase
+
+  if method == 'get' && path.match("\/api/v0.1/items/[A-Za-z-]+/[0-9]+/is-research")
+    return handle_is_research(event)
+  elsif method == 'get' && path == "/docs/is-research"
+    return handle_swagger
+  else
+    raise "Invalid request"
+  end
+end
+
+def handle_swagger
+  $swagger_doc = JSON.parse File.read('swagger.json') if $swagger_doc.nil?
+
+  respond 200, $swagger_doc
 end
 
 def handle_is_research(event)
