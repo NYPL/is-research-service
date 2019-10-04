@@ -25,12 +25,10 @@ def handle_event(event:, context:)
   path = event["path"]
   method = event["httpMethod"].downcase
 
-  if method == 'get' && path.match("\/api/v0.1/items/[A-Za-z-]+/[0-9]+/is-research")
-    return handle_is_research(event)
-  elsif method == 'get' && path == "/docs/is-research"
+  if method == 'get' && path == "/docs/is-research"
     return handle_swagger
   else
-    raise "Invalid request"
+    return handle_is_research(event)
   end
 end
 
