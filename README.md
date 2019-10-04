@@ -24,7 +24,13 @@ All config is in sam.[ENVIRONMENT].yml templates, encrypted as necessary.
 ### Running Events Locally
 The following will invoke the lambda against the sample event.json
 
-``sam local invoke --event event.json --region us-east-1 --template sam.local.yml --profile [aws profile]``
+``sam local invoke --event [event] --region us-east-1 --template sam.local.yml --profile [aws profile]``
+
+#### Events
+ * `event-is_research_false.json`
+ * `event-not_found.json`
+ * `event-swagger.json`
+
 
 ### Running Server Locally
 To run the server locally:
