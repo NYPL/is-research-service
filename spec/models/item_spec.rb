@@ -92,7 +92,7 @@ describe Item do
 
     it "should throw DataError for unknown item_type_code and/or location_code" do
       test_item = test_items[6]
-      expect(test_item[:item].is_research?).to raise_error(DataError)
+      expect{ test_item[:item].is_research? }.to raise_error(DataError)
     end
   end
 end
