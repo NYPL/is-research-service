@@ -19,7 +19,7 @@ describe 'app' do
   end
 
   it "should handle a valid api gateway event" do
-    event = JSON.parse(File.read("./event.json"))
+    event = JSON.parse(File.read("./event-is_research_true.json"))
     response = handle_event(event: event, context: '')
 
     lamba_resp = JSON.parse(response[:body])
@@ -30,7 +30,7 @@ describe 'app' do
   end
 
   it "should respond with a 404 if requested item isn't found" do
-    event = JSON.parse(File.read("./event_not_found.json"))
+    event = JSON.parse(File.read("./event-not_found.json"))
     response = handle_event(event: event, context: '')
 
     lamba_resp = JSON.parse(response[:body])
