@@ -1,0 +1,106 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "0.1",
+    "title": "Is Research Service",
+    "description": "Ending point for querying if an item is research"
+  },
+  "basePath": "/api/v0.1",
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/items/{nypl_source}/{id}/is-research": {
+      "parameters": [
+        {
+          "name": "nypl_source",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "the nypl source"
+        },
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "the item id"
+        }
+      ],
+      "get": {
+        "tags": [
+          "items"
+        ],
+        "summary": "Submit a request to determine if provided item is research",
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "IsResearchRequest",
+            "in": "body",
+            "description": "Object reflecting item's nypl-source and id",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/IsResearchRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/IsResearchResponse"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "IsResearchRequest": {
+      "type": "object",
+      "required": [
+        "nypl_source",
+        "id"
+      ],
+      "properties": {
+        "nyplSource": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "isResearch": {
+          "type": "boolean"
+        }
+      }
+    },
+    "IsResearchResponse": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean",
+          "example": true
+        },
+        "result": {
+          "type": "object",
+          "properties": {
+            "nyplSource": {
+              "type": "string"
+            },
+            "id": {
+              "type": "string"
+            },
+            "isResearch": {
+              "type": "boolean"
+            }
+          }
+        }
+      }
+    }
+  }
+}
