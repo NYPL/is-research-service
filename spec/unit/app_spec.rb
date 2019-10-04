@@ -4,8 +4,8 @@ describe 'app' do
       .to_return(status: 200, body: '{ "access_token": "fake-access-token" }')
 
     stub_request(:get,
-      "#{ENV['PLATFORM_API_BASE_URL']}items/sierra-nypl/37314241")
-      .to_return(status: 200, body: File.read("./spec/fixtures/item_37314241.json"))
+      "#{ENV['PLATFORM_API_BASE_URL']}items/sierra-nypl/10002559")
+      .to_return(status: 200, body: File.read("./spec/fixtures/item_10002559.json"))
 
     stub_request(:get,
       "#{ENV['PLATFORM_API_BASE_URL']}items/sierra-nypl/F16398857")
