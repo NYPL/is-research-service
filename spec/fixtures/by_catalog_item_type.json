@@ -6,5 +6,40 @@
     "collectionType": [
       "Branch"
     ]
+  },
+  "132": {
+    "id": "nyplCatalogItemTypes:132",
+    "code": "132",
+    "label": "RFVC - FILM",
+    "collectionType": [
+      "Research",
+      "Branch"
+    ]
+  },
+  "55": {
+    "id": "nyplCatalogItemTypes:55",
+    "code": "55",
+    "label": "book, limited circ, MaRLI",
+    "requestable": true,
+    "collectionType": [
+      "Research"
+    ]
+  },
+  "7": {
+    "id": "nyplCatalogItemTypes:7",
+    "code": "7",
+    "label": "printed music, non-circ",
+    "requestable": true,
+    "collectionType": [
+      "Research"
+    ]
+  },
+  "102": {
+    "id": "nyplCatalogItemTypes:102",
+    "code": "102",
+    "label": "Book, paperback",
+    "collectionType": [
+      "Branch"
+    ]
   }
 }

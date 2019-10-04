@@ -14,10 +14,6 @@ Resources:
             Path: /api/v0.1/items/{nypl_source}/{id}/is-research
             Method: get
             Request:
-              Parameters:
-                Paths:
-                  Nypl_source: true
-                  Id: true
       Runtime: ruby2.5
       Timeout: 30
       Environment:

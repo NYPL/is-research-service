@@ -8,10 +8,10 @@ install:
 cache:
 - bundler
 script:
-- bundle exec rspec -fd
+- bundle exec rspec
 deploy:
 - provider: lambda
-  function_name: IsResearch-qa
+  function_name: IsResearchService-qa
   description: A small service for determining if an item is research
   region: us-east-1
   role: arn:aws:iam::946183545209:role/lambda-full-access
@@ -30,7 +30,7 @@ deploy:
   on:
     branch: qa
 - provider: lambda
-  function_name: IsResearch-production
+  function_name: IsResearchService-production
   description: A small service for queuing metadata sync requests to SCSB
   region: us-east-1
   role: arn:aws:iam::946183545209:role/lambda-full-access

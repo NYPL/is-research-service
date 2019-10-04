@@ -39,41 +39,11 @@ class PlatformApiClient
       parse_json_response response
 
     rescue Exception => e
-      raise StandardError.new(e), "Failed to retrieve #{path} schema: #{e.message}"
+      raise StandardError.new(e), "Failed to retrieve #{path} #{e.message}"
     end
   end
 
-  def post (path, body, options = {})
-    options = {
-      authenticated: true
-    }.merge options
-
-    authenticate! if options[:authenticated]
-
-    uri = URI.parse("#{ENV['PLATFORM_API_BASE_URL']}#{path}")
-
-    http = Net::HTTP.new(uri.host, uri.port)
-    http.use_ssl = uri.scheme === 'https'
-
-    request = Net::HTTP::Post.new(uri.path, 'Content-Type' => 'application/json')
-    request.body = body.to_json
-
-    $logger.debug "Posting to platform api", { uri: uri, body: body }
-
-    # Add bearer token header
-    request['Authorization'] = "Bearer #{@access_token}" if options[:authenticated]
-
-    # Execute request:
-    response = http.request(request)
-
-    $logger.debug "Got platform api response", { code: response.code, body: response.body }
-
-    parse_json_response response
-  end
-
   private
-
-
 
   def parse_json_response (response)
     if response.code == "200"

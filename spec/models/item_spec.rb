@@ -4,22 +4,36 @@ require 'webmock/rspec'
 describe Item do
   test_items = [
     {
-      item: Item.new("sierra-nypl", "37314241"),
+      item: Item.new("sierra-nypl", "37314241"),  # item type and location are branch
       result: false
     },
     {
-      item: Item.new("recap-pul", "6739525"),
+      item: Item.new("recap-pul", "6739525"), # partner item
       result: true
     },
+    {
+      item: Item.new("sierra-nypl", "10002559"), # collectionType is only 'Research'
+      result: true
+    },
+    {
+      item: Item.new("sierra-nypl", "26085395"), # collectionType is both 'Research' and 'Branch'; item collectionType 'Research'
+      result: true
+    },
+    {
+      item: Item.new("sierra-nypl", "F17903918"), # fake record to reflect collectionType is both and item type is both
+      result: true
+    },
+    {
+      item: Item.new("sierra-nypl", "F16398857"), # fake record to reflect collectionType is both and item type is 'Branch'
+      result: false
+    },
+    {
+      item: Item.new("sierra-nypl", "36387834"), # real ID but unknown location_code and item_type_code
+      result: false
+    }
   ]
 
   before(:each) do
-    ENV['PLATFORM_API_BASE_URL'] = 'https://example.com/api/v0.1/'
-    ENV['NYPL_OAUTH_ID'] = Base64.strict_encode64 'fake-client'
-    ENV['NYPL_OAUTH_SECRET'] = Base64.strict_encode64 'fake-secret'
-    ENV['NYPL_OAUTH_URL'] = 'https://isso.example.com/'
-    ENV['NYPL_CORE_S3_BASE_URL'] = 'https://example.com/'
-
     $platform_api = PlatformApiClient.new
     $nypl_core = NyplCore.new
 
@@ -45,15 +59,40 @@ describe Item do
     end
   end
 
-  describe "#is_research" do
+  describe "#is_research?" do
     it "should declare partner items as research" do
-      item = test_items[1][:item]
-      expect(item.is_research).to eq(true)
+      test_item = test_items[1]
+      expect(test_item[:item].is_research?).to eq(test_item[:result])
     end
 
     it "should declare branch items as not research" do
-      item = test_items[0][:item]
-      expect(item.is_research).to eq(false)
+      test_item = test_items[0]
+      expect(test_item[:item].is_research?).to eq(test_item[:result])
+    end
+
+    it "should declare an item whose location has collectionType 'Research' (only) to be research" do
+      test_item = test_items[2]
+      expect(test_item[:item].is_research?).to eq(test_item[:result])
+    end
+
+    it "should declare an item whose location has collectionType 'Research' and 'Branch' and item type with collectionType 'Research' as research" do
+      test_item = test_items[3]
+      expect(test_item[:item].is_research?).to eq(test_item[:result])
+    end
+
+    it "should declare an item whose location has collectionType 'Research' and 'Branch' and item type with collectionType 'Research' and 'Branch' as research" do
+      test_item = test_items[4]
+      expect(test_item[:item].is_research?).to eq(test_item[:result])
+    end
+
+    it "should declare an item whose location has collectionType 'Research' and 'Branch' and item type with collectionType 'Branch' as not research" do
+      test_item = test_items[5]
+      expect(test_item[:item].is_research?).to eq(test_item[:result])
+    end
+
+    it "should throw DataError for unknown item_type_code and/or location_code" do
+      test_item = test_items[6]
+      expect { test_item[:item].is_research? }.to raise_error(DataError)
     end
   end
 end
