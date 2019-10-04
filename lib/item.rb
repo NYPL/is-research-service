@@ -5,9 +5,11 @@ class Item
   attr_reader :nypl_source, :id
   attr_accessor :item_type_code, :location_code
 
+
   def initialize(nypl_source, id)
     @nypl_source = nypl_source
     @id = id
+    @log_data = {}
   end
 
   def is_research?
@@ -15,7 +17,7 @@ class Item
 
     result = is_partner? || item_type_is_research? || location_is_only_research?
 
-    $logger.debug "Evaluating is-research for #{nypl_source} #{id}: #{result}", $log_data
+    $logger.debug "Evaluating is-research for #{nypl_source} #{id}: #{result}", @log_data
 
     return result
   end
@@ -23,7 +25,7 @@ class Item
   private
   def is_partner?
     result = nypl_source == "recap-cul" || nypl_source == "recap-pul"
-    $log_data = {is_partner?: result}
+    @log_data[:is_partner?] = result
     return result
   end
 
@@ -34,7 +36,7 @@ class Item
       raise DataError.new("This item's catalog item type is not reflected in NYPL Core")
     end
     result = item_collection_type["collectionType"].include?("Research")
-    $log_data[:item_type_is_research?] = result
+    @log_data[:item_type_is_research?] = result
     return result
   end
 
@@ -46,7 +48,7 @@ class Item
     end
     collection_types = sierra_location["collectionTypes"]
     result = collection_types == ["Research"]
-    $log_data[:location_is_only_research] = result
+    @log_data[:location_is_only_research] = result
     return result
   end
 
