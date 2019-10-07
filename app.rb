@@ -27,8 +27,10 @@ def handle_event(event:, context:)
 
   if method == 'get' && path == "/docs/is-research"
     return handle_swagger
-  else
+  elsif method == 'get' && path.include?("is-research")
     return handle_is_research(event)
+  else
+    respond 400, "Bad method"
   end
 end
 
