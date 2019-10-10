@@ -2,7 +2,7 @@
 
 This is a Ruby app deployed as an AWS Lambda behind API Gateway to serve:
 
-``GET /api/v0.1/items/{nypl_source}/{id}/is-research``
+``GET /api/v0.1/items/{nyplSource}/{id}/is-research``
 
 ## Setup
 ### Installation

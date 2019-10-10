@@ -1,11 +1,11 @@
 {
   "httpMethod":"GET",
   "body":null,
-  "resource":"/api/v0.1/items/{nypl_source}/{id}/is-research",
+  "resource":"/api/v0.1/items/{nyplSource}/{id}/is-research",
   "requestContext":{
     "resourceId":"123456",
     "apiId":"1234567890",
-    "resourcePath":"/api/v0.1/items/{nypl_source}/{id}/is-research",
+    "resourcePath":"/api/v0.1/items/{nyplSource}/{id}/is-research",
     "httpMethod":"GET",
     "requestId":"c6af9ac6-7b61-11e6-9a41-93e8deadbeef",
     "accountId":"123456789012",
@@ -23,7 +23,7 @@
       "accountId":null
   },
   "extendedRequestId":null,
-  "path":"/api/v0.1/items/{nypl_source}/{id}/is-research"},
+  "path":"/api/v0.1/items/{nyplSource}/{id}/is-research"},
   "queryStringParameters":null,
   "multiValueQueryStringParameters":null,
   "headers":{
@@ -83,7 +83,7 @@
     ]
   },
   "pathParameters":{
-    "nypl_source":"sierra-nypl",
+    "nyplSource":"sierra-nypl",
     "id":"37314241"
   },
   "stageVariables":null,

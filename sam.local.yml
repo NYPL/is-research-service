@@ -11,7 +11,7 @@ Resources:
         Api:
           Type: Api
           Properties:
-            Path: /api/v0.1/items/{nypl_source}/{id}/is-research
+            Path: /api/v0.1/items/{nyplSource}/{id}/is-research
             Method: get
       Runtime: ruby2.5
       Timeout: 30

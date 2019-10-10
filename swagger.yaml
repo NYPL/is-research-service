@@ -7,9 +7,9 @@ basePath: /api/v0.1
 schemes:
  - https
 paths:
-  /items/{nypl_source}/{id}/is-research:
+  /items/{nyplSource}/{id}/is-research:
     parameters:
-    - name: nypl_source
+    - name: nyplSource
       in: path
       required: true
       type: string
@@ -43,7 +43,7 @@ definitions:
   IsResearchRequest:
     type: object
     required:
-    - nypl_source
+    - nyplSource
     - id
     properties:
       nyplSource:
@@ -67,4 +67,3 @@ definitions:
             type: string
           isResearch:
             type: boolean
-

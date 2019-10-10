@@ -40,12 +40,13 @@ def handle_swagger
 end
 
 def handle_is_research(event)
+  puts event["pathParameters"]
   begin
     raise StandardError unless event["pathParameters"]
     raise ParameterError, "nypl source required" unless event["pathParameters"]["nyplSource"]
     raise ParameterError, "id required" unless event["pathParameters"]["id"]
 
-    nypl_source = event["pathParameters"]["nypl_source"]
+    nypl_source = event["pathParameters"]["nyplSource"]
     id = event["pathParameters"]["id"]
 
     $logger.debug "Handling is-research for #{nypl_source} #{id}", { nypl_source: nypl_source, id: id}
