@@ -1,5 +1,4 @@
 require 'httparty'
-require "pry"
 
 class Item
   attr_reader :nypl_source, :id

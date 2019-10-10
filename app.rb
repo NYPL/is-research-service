@@ -1,6 +1,5 @@
 require 'httparty'
 require 'json'
-require 'pry'
 require 'nypl_log_formatter'
 
 require_relative 'lib/item'

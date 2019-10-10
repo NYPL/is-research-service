@@ -16,5 +16,4 @@ end
 group :DEVELOPMENT do
   gem "pry"
   gem "dotenv"
-  gem "pry-remote"
 end
