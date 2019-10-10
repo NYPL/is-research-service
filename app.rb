@@ -42,8 +42,8 @@ end
 def handle_is_research(event)
   begin
     raise StandardError unless event["pathParameters"]
-    raise ParameterError("nypl_source required") unless event["pathParameters"]["nypl_source"]
-    raise ParameterError("id required") unless event["pathParameters"]["id"]
+    raise ParameterError, "nypl_source required" unless event["pathParameters"]["nypl_source"]
+    raise ParameterError, "id required" unless event["pathParameters"]["id"]
 
     nypl_source = event["pathParameters"]["nypl_source"]
     id = event["pathParameters"]["id"]
