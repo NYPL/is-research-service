@@ -5,12 +5,12 @@
     "title": "Is Research Service",
     "description": "Ending point for querying if an item is research"
   },
-  "basePath": "/api/v0.1",
+  "basePath": "/api",
   "schemes": [
     "https"
   ],
   "paths": {
-    "/items/{nyplSource}/{id}/is-research": {
+    "/v0.1/items/{nyplSource}/{id}/is-research": {
       "parameters": [
         {
           "name": "nyplSource",
