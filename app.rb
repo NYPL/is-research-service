@@ -26,8 +26,10 @@ def handle_event(event:, context:)
 
   if method == 'get' && path == "/docs/is-research"
     return handle_swagger
-  elsif method == 'get' && /\/api\/v0.1\/items\/[a-z-]+\/\w+\/is-research/.match?(path)
-    return handle_is_research(event)
+  elsif method == 'get' && /\/api\/v0.1\/(items|bibs)\/[a-z-]+\/\w+\/is-research/.match?(path)
+    type = path.split('/')[3].chomp('s').capitalize
+    type = Kernel.const_get(type)
+    return handle_is_research(event, type)
   else
     respond 400, "Bad method"
   end
@@ -39,7 +41,7 @@ def handle_swagger
   respond 200, $swagger_doc
 end
 
-def handle_is_research(event)
+def handle_is_research(event, type)
   puts event["pathParameters"]
   begin
     raise StandardError unless event["pathParameters"]
@@ -51,8 +53,8 @@ def handle_is_research(event)
 
     $logger.debug "Handling is-research for #{nypl_source} #{id}", { nypl_source: nypl_source, id: id}
 
-    item = Item.new(nypl_source, id)
-    respond 200, { nyplSource: item.nypl_source, id: item.id, isResearch: item.is_research? }
+    instance = type.new(nypl_source, id)
+    respond 200, { nyplSource: instance.nypl_source, id: instance.id, isResearch: instance.is_research? }
   rescue ParameterError => e
     respond 400, message: "ParameterError: #{e.message}"
   rescue NotFoundError => e

@@ -1,31 +1,34 @@
 require 'httparty'
+require_relative 'marc_record'
 
-class Item
-  attr_reader :nypl_source, :id
+class Item < MarcRecord
   attr_accessor :item_type_code, :location_code
 
-
-  def initialize(nypl_source, id)
-    @nypl_source = nypl_source
-    @id = id
-    @log_data = {}
-  end
-
   def is_research?
-    get_platform_api_data
+    data = get_platform_api_data
 
-    result = is_partner? || item_type_is_research? || location_is_only_research?
+    record_errors(data)
+
+    set_properties(data) unless is_partner
+
+    result = @is_partner || item_type_is_research? || location_is_only_research?
 
     $logger.debug "Evaluating is-research for #{nypl_source} #{id}: #{result}", @log_data
 
     return result
   end
 
+  def record_errors(data)
+    raise DataError("Record has no fixedFields property") unless data["fixedFields"]
+    raise DataError("Record does not have fixedFields 61") unless data["fixedFields"]["61"]
+    raise DataError("Record does not have a value property on fixedFields 61") unless data["fixedFields"]["61"]["value"]
+    raise DataError("Record does not have a location property") unless data["location"]
+    raise DataError("Record does not have a code for location property") unless data["location"]["code"]
+  end
+
   private
-  def is_partner?
-    result = nypl_source == "recap-cul" || nypl_source == "recap-pul"
-    @log_data[:is_partner?] = result
-    return result
+  def api_path
+    "items/" + @nypl_source + "/" + @id
   end
 
   def item_type_is_research?
@@ -51,21 +54,7 @@ class Item
     return result
   end
 
-  def get_platform_api_data
-    response = $platform_api.get("items/" + @nypl_source + "/" + @id)
-
-    raise NotFoundError unless response["data"]
-
-    data = response["data"]
-
-    return if is_partner?
-
-    raise DataError("Record has no fixedFields property") unless data["fixedFields"]
-    raise DataError("Record does not have fixedFields 61") unless data["fixedFields"]["61"]
-    raise DataError("Record does not have a value property on fixedFields 61") unless data["fixedFields"]["61"]["value"]
-    raise DataError("Record does not have a location property") unless data["location"]
-    raise DataError("Record does not have a code for location property") unless data["location"]["code"]
-
+  def set_properties(data)
     self.item_type_code = data["fixedFields"]["61"]["value"]
     self.location_code = data["location"]["code"]
   end
