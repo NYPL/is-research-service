@@ -13,16 +13,12 @@ class MarcRecord
     return result
   end
 
-  def get_platform_api_data
+  def get_platform_api_data(api_path)
     response = $platform_api.get(api_path)
 
     raise NotFoundError unless response["data"]
 
     data = response["data"]
-
-    @is_partner = is_partner?
-
-    return data if @is_partner
 
     data
   end

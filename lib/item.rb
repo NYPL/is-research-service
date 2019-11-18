@@ -5,20 +5,23 @@ class Item < MarcRecord
   attr_accessor :item_type_code, :location_code
 
   def is_research?
-    data = get_platform_api_data
+    data = get_platform_api_data item_path
 
-    record_errors(data)
+    validate_record(data)
 
-    set_properties(data) unless is_partner
+    if is_partner?
+      result = true
+    else
+      set_properties(data)
+      result = item_type_is_research? || location_is_only_research?
+    end
 
-    result = @is_partner || item_type_is_research? || location_is_only_research?
-
-    $logger.debug "Evaluating is-research for #{nypl_source} #{id}: #{result}", @log_data
+    $logger.debug "Evaluating is-research for item #{nypl_source} #{id}: #{result}", @log_data
 
     return result
   end
 
-  def record_errors(data)
+  def validate_record(data)
     raise DataError("Record has no fixedFields property") unless data["fixedFields"]
     raise DataError("Record does not have fixedFields 61") unless data["fixedFields"]["61"]
     raise DataError("Record does not have a value property on fixedFields 61") unless data["fixedFields"]["61"]["value"]
@@ -27,7 +30,7 @@ class Item < MarcRecord
   end
 
   private
-  def api_path
+  def item_path
     "items/" + @nypl_source + "/" + @id
   end
 

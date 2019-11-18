@@ -43,7 +43,6 @@ def handle_swagger
 end
 
 def handle_is_research(event, type)
-  puts event["pathParameters"]
   begin
     raise StandardError unless event["pathParameters"]
     raise ParameterError, "nypl source required" unless event["pathParameters"]["nyplSource"]
