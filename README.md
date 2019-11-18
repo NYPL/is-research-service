@@ -4,10 +4,20 @@ This is a Ruby app deployed as an AWS Lambda behind API Gateway to serve:
 
 ``GET /api/v0.1/items/{nyplSource}/{id}/is-research``
 
+The business logic implemented in this code base for determining if an item or bib is research or circulating is documented here:
+
+https://github.com/NYPL/nypl-core/blob/master/vocabularies/business-logic/nyplResearchItemAndBibDetermination.md
+
 ## Setup
 ### Installation
 
 ``bundle install; bundle install --deployment``
+
+If you get an error ``You must use Bundler 2 or greater with this lockfile.``
+
+run
+
+``gem install bundler -v 2.0.2``
 
 ### Config
 All config is in sam.[ENVIRONMENT].yml templates, encrypted as necessary.
@@ -27,8 +37,10 @@ The following will invoke the lambda against the sample event.json
 ``sam local invoke --event [event] --region us-east-1 --template sam.local.yml --profile [aws profile]``
 
 #### Events
- * `event-is_research_false.json`
- * `event-not_found.json`
+ * `event-bib_is_research_true.json`
+ * `event-item_is_research_true.json`
+ * `event-item_is_research_false.json`
+ * `event-item_not_found.json`
  * `event-swagger.json`
 
 

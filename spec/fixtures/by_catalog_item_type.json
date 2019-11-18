@@ -41,5 +41,12 @@
     "collectionType": [
       "Branch"
     ]
+  },
+  "2": {
+    "id": "nyplCatalogItemTypes:2",
+    "code": "2",
+    "label": "book non-circ",
+    "requestable": true,
+    "collectionType":["Research"]
   }
 }

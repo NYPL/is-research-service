@@ -19,7 +19,7 @@ describe 'app' do
   end
 
   it "should handle a valid api gateway event" do
-    event = JSON.parse(File.read("./event-is_research_true.json"))
+    event = JSON.parse(File.read("./event-item_is_research_true.json"))
     response = handle_event(event: event, context: '')
 
     lamba_resp = JSON.parse(response[:body])
