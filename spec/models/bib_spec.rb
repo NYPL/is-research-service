@@ -7,7 +7,7 @@ describe Bib do
       result: true
     },
     {
-      bib: Bib.new("recap-pul", "66666"), # corresponding bib_items fixture is 404 to reflect a bib with 0 items
+      bib: Bib.new("recap-pul", "66666"), # `./bib_items_66666.json` is a 404 to reflect the behavior of a bib with 0 items
       result: true
     },
     {
