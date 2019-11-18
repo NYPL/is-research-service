@@ -37,8 +37,10 @@ The following will invoke the lambda against the sample event.json
 ``sam local invoke --event [event] --region us-east-1 --template sam.local.yml --profile [aws profile]``
 
 #### Events
- * `event-is_research_false.json`
- * `event-not_found.json`
+ * `event-bib_is_research_true.json`
+ * `event-item_is_research_true.json`
+ * `event-item_is_research_false.json`
+ * `event-item_not_found.json`
  * `event-swagger.json`
 
 
