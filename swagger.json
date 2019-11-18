@@ -65,6 +65,62 @@
          }
         ]
       }
+    },
+    "/v0.1/bibs/{nyplSource}/{id}/is-research": {
+      "parameters": [
+        {
+          "name": "nyplSource",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "the nypl source"
+        },
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "type": "string",
+          "description": "the bib id"
+        }
+      ],
+      "get": {
+        "tags": [
+          "bibs"
+        ],
+        "summary": "Submit a request to determine if provided bib is research",
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "IsResearchRequest",
+            "in": "body",
+            "description": "Object reflecting bib's nypl-source and id",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/IsResearchRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/IsResearchResponse"
+            }
+          }
+        },
+        "security" : [
+         {
+            "api_auth" : [
+               "openid offline_access api write:hold_request readwrite:hold_request"
+            ]
+         }
+        ]
+      }
     }
   },
   "definitions": {
