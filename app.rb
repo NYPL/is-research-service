@@ -3,6 +3,7 @@ require 'json'
 require 'nypl_log_formatter'
 
 require_relative 'lib/item'
+require_relative 'lib/bib'
 require_relative 'lib/platform_api_client'
 require_relative 'lib/kms_client'
 require_relative 'lib/nypl_core'

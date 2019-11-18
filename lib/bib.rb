@@ -16,7 +16,7 @@ class Bib < MarcRecord
     data.length == 0
   end
 
-  def has_at_least_one_research_item(data)
+  def has_at_least_one_research_item?(data)
     return !!data.find { |item|
       item = Item.new(item["nyplSource"], item["id"])
       item.is_research?
