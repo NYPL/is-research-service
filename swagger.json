@@ -153,10 +153,12 @@
           "type": "object",
           "properties": {
             "nyplSource": {
-              "type": "string"
+              "type": "string",
+              "example": "sierra-nypl"
             },
             "id": {
-              "type": "string"
+              "type": "string",
+              "example": "17746307"
             },
             "isResearch": {
               "type": "boolean"
