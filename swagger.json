@@ -49,7 +49,7 @@
         "security" : [
          {
             "api_auth" : [
-               "openid offline_access api write:hold_request readwrite:hold_request"
+               "openid read:item"
             ]
          }
         ]
@@ -94,7 +94,7 @@
         "security" : [
          {
             "api_auth" : [
-               "openid offline_access api write:hold_request readwrite:hold_request"
+               "openid read:item"
             ]
          }
         ]
