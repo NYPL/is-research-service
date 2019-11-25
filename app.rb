@@ -24,11 +24,10 @@ def handle_event(event:, context:)
 
   path = event["path"]
   method = event["httpMethod"].downcase
-  method_is_valid = ['get', 'options'].include?(method)
 
-  if method_is_valid && path == "/docs/is-research"
+  if method == 'get' && path == "/docs/is-research"
     return handle_swagger
-  elsif method_is_valid && /\/api\/v0.1\/(items|bibs)\/[a-z-]+\/\w+\/is-research/.match?(path)
+  elsif method == 'get' && /\/api\/v0.1\/(items|bibs)\/[a-z-]+\/\w+\/is-research/.match?(path)
     type = path.split('/')[3].chomp('s').capitalize
     type = Kernel.const_get(type)
     return handle_is_research(event, type)
