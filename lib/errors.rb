@@ -15,3 +15,9 @@ class NotFoundError < StandardError
     super
   end
 end
+
+class DeletedError < StandardError
+  def initialize(msg="Deleted bib record")
+    super
+  end
+end

@@ -35,8 +35,8 @@ class Item < MarcRecord
   def item_type_is_research?
     item_collection_type = $nypl_core.by_catalog_item_type[item_type_code]
     if item_collection_type.nil?
-      $logger.debug "Unknown item_type #{item_type_code}"
-      raise DataError.new("This item's catalog item type is not reflected in NYPL Core")
+      $logger.error "Unknown item_type #{item_type_code}"
+      raise DataError.new("This item's catalog item type [#{item_type_code}] is not reflected in NYPL Core")
     end
     result = item_collection_type["collectionType"].include?("Research")
     @log_data[:item_type_is_research?] = result
@@ -46,8 +46,8 @@ class Item < MarcRecord
   def location_is_only_research?
     sierra_location = $nypl_core.by_sierra_location[location_code]
     if sierra_location.nil?
-      $logger.debug "Unknown location_code #{location_code}"
-      raise DataError.new("This item's Sierra location is not reflected in NYPL Core")
+      $logger.error "Unknown location_code #{location_code}"
+      raise DataError.new("This item's Sierra location code [#{location_code}] is not reflected in NYPL Core")
     end
     collection_types = sierra_location["collectionTypes"]
     result = collection_types == ["Research"]

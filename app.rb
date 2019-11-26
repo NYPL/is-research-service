@@ -59,6 +59,8 @@ def handle_is_research(event, type)
     respond 400, message: "ParameterError: #{e.message}"
   rescue NotFoundError => e
     respond 404, message: "NotFoundError: #{e.message}"
+  rescue DeletedError => e
+    respond 410, message: "DeletedError: #{e.message}"
   rescue DataError => e
     respond 500, message: "DataError: #{e.message}"
   rescue => e
@@ -68,5 +70,9 @@ end
 
 def respond(statusCode = 200, body = nil)
   $logger.debug("Responding with #{statusCode}", body)
-  { statusCode: statusCode, body: body.to_json, headers: { "Content-type": "application/json" } }
+  { statusCode: statusCode, body: body.to_json, headers: {
+      "Content-type": "application/json",
+      "Access-Control-Allow-Origin": "*"
+    }
+  }
 end
