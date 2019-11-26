@@ -7,13 +7,9 @@ describe Bib do
       result: true
     },
     {
-      bib: Bib.new("recap-pul", "66666"), # `./bib_items_66666.json` is a 404 to reflect the behavior of a bib with 0 items
-      result: true
-    },
-    {
       bib: Bib.new("sierra-nypl", "17906651"), # has an item that is research
       result: true
-    },
+    }
   ]
 
   before(:each) do
@@ -42,7 +38,19 @@ describe Bib do
     end
 
     stub_request(:get,
+      "#{ENV['PLATFORM_API_BASE_URL']}bibs/recap-pul/66666/items").to_return(status: 404, body: File.read("./spec/fixtures/sierra_404.json")
+    )
+
+    stub_request(:get,
       "#{ENV['PLATFORM_API_BASE_URL']}bibs/recap-pul/66666").to_return(status: 200, body: File.read("./spec/fixtures/bib_66666.json")
+    )
+
+    stub_request(:get,
+      "#{ENV['PLATFORM_API_BASE_URL']}bibs/sierra-nypl/19060447/items").to_return(status: 404, body: File.read("./spec/fixtures/sierra_404.json")
+    )
+
+    stub_request(:get,
+      "#{ENV['PLATFORM_API_BASE_URL']}bibs/sierra-nypl/19060447").to_return(status: 200, body: File.read("./spec/fixtures/bib_19060447.json")
     )
   end
 
@@ -58,8 +66,13 @@ describe Bib do
     end
 
     it "should declare a bib with at least one research item as research" do
-      test_bib = test_bibs[2]
-      expect(test_bib[:bib].is_research?).to eq(test_bib[:result])
+      test_bib = Bib.new('recap-pul', '66666')
+      expect(test_bib.is_research?).to eq(true)
+    end
+
+    it "should throw DeletedError for a deleted bib record" do
+      test_bib = Bib.new('sierra-nypl', '19060447')
+      expect { test_bib.is_research? }.to raise_error(DeletedError)
     end
   end
 end
