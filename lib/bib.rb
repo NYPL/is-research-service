@@ -4,10 +4,12 @@ class Bib < MarcRecord
   def is_research?
     begin
       items = get_platform_api_data items_path
+      result = is_partner? || has_zero_items?(items) || has_at_least_one_research_item?(items)
     rescue NotFoundError => e
       bib = get_platform_api_data bib_path
+      raise DeletedError if bib["deleted"]
+      result = !!bib
     end
-    result = is_partner? || has_zero_items?(items) || has_at_least_one_research_item?(items)
 
     $logger.debug "Evaluating is-research for bib #{nypl_source} #{id}: #{result}", @log_data
 
@@ -16,7 +18,7 @@ class Bib < MarcRecord
 
   private
   def has_zero_items?(items)
-    result = items.empty?
+    result = items && items.empty?
     @log_data[:has_zero_items?] = result
     result
   end
