@@ -1,6 +1,8 @@
 require 'httparty'
 
 class Bib < MarcRecord
+  @@mixed_bib_ids = nil
+
   def is_research?
     begin
       items = get_platform_api_data items_path
@@ -20,14 +22,14 @@ class Bib < MarcRecord
   def is_mixed_bib?
     if @@mixed_bib_ids.nil?
       @@mixed_bib_ids = File.read('data/mixed-bibs.csv')
-        .split("\n")
-        .map { |bnum| bnum.strip.sub(/^b/, '') }
+      .split("\n")
+      .map { |bnum| bnum.strip.sub(/^b/, '').chop }
 
       $logger.debug "Loaded #{@@mixed_bib_ids.size} mixed bib ids"
     end
 
-    is_mixed_bib = @@mixed_bib_ids.include? bib['id']
-    $logger.debug "Determined is_mixed_bib=#{is_mixed_bib} for #{bib['id']}"
+    is_mixed_bib = @@mixed_bib_ids.include? id
+    $logger.debug "Determined is_mixed_bib=#{is_mixed_bib} for #{id}"
 
     is_mixed_bib
   end
