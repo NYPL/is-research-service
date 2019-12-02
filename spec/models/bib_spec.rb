@@ -9,6 +9,10 @@ describe Bib do
     {
       bib: Bib.new("sierra-nypl", "17906651"), # has an item that is research
       result: true
+    },
+    {
+      bib: Bib.new("sierra-nypl", "10036259"), # mixed bib that calls Bib#is_mixed_bib?
+      result: true
     }
   ]
 
@@ -73,6 +77,11 @@ describe Bib do
     it "should throw DeletedError for a deleted bib record" do
       test_bib = Bib.new('sierra-nypl', '19060447')
       expect { test_bib.is_research? }.to raise_error(DeletedError)
+    end
+
+    it "should declare a mixed bib as research" do
+      test_bib = test_bibs[2]
+      expect(test_bib[:bib].is_research?).to eq(test_bib[:result])
     end
   end
 end
