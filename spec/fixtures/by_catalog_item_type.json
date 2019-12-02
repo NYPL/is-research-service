@@ -48,5 +48,13 @@
     "label": "book non-circ",
     "requestable": true,
     "collectionType":["Research"]
+  },
+  "101": {
+    "id": "nyplCatalogItemTypes:101",
+    "code": "101",
+    "label": "Book, circ",
+    "collectionType": [
+      "Branch"
+    ]
   }
 }

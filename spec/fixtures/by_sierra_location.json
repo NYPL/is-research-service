@@ -100,5 +100,17 @@
     ],
     "requestable": false,
     "deliveryLocationTypes": []
+  },
+  "mya0n": {
+    "code": "mya0n",
+    "label": "Performing Arts Circulating Non-Fiction",
+    "locationsApiSlug": null,
+    "collectionTypes": [
+      "Branch"
+    ],
+    "recapLocation": null,
+    "sierraDeliveryLocations": [],
+    "requestable": false,
+    "deliveryLocationTypes": []
   }
 }
