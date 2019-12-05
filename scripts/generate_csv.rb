@@ -4,18 +4,18 @@ require 'nypl_log_formatter'
 require "json"
 require 'pg'
 require 'csv'
+require './lib/nypl_core.rb'
+require './lib/errors.rb'
 
-require_relative 'lib/item'
-require_relative 'lib/nypl_core'
-require_relative 'lib/errors'
+require_relative 'utils'
 
-Dotenv.load('config/local.env')
+Dotenv.load('./config/local.env')
 
 environment = :development
 
 params = {
   development: {
-    limit: 10,
+    limit: 10000,
     from_bib_id: '0',
     institution: 'sierra-nypl'
   },
@@ -26,6 +26,8 @@ def init
 
   $nypl_core = NyplCore.new
   $logger = NyplLogFormatter.new(STDOUT, level: ENV['LOG_LEVEL'] || 'info')
+  $mixed_bib_ids = nil
+  @log_data = {}
   # $platform_api = PlatformApiClient.new
 
   $initialized = true
@@ -49,7 +51,7 @@ while true
     "order by id limit #{params[environment][:limit]}"
   )
 
-  ids = results.field_values('id')
+  ids = results.field_values 'id'
 
   if ids.empty?
     puts "Got through the bibs!"
@@ -59,15 +61,29 @@ while true
   conn.close
 
   results.each do |item|
-    stringified_bib_id_array = item["bib_ids"]
-    bib_ids = JSON.parse stringified_bib_id_array
+    bib_ids = JSON.parse item["bib_ids"]
     if bib_ids.any?
-      binding.pry
-      item = Item.new(params[environment][:institution], )
+      fixed_fields = JSON.parse item["fixed_fields"]
+      location = JSON.parse item["location"]
+
+      next if !fixed_fields["61"] || !fixed_fields["61"]["value"] || !location["code"]
+
+      item_data = {
+        nypl_source: "sierra-nypl",
+        id: item["id"],
+        item_type_code: fixed_fields["61"]["value"],
+        location_code: location["code"]
+      }
+
+      bib_ids.each do |bib_id|
+        result = is_research? item_data
+
+        puts result
+
+        break if result == false
+      end
     end
   end
-
-  break
 end
 
 # CSV.open(is_research_file, "w+") do |csv|
