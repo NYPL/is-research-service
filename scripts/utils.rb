@@ -6,6 +6,7 @@ def item_type_is_research?(item_type_code)
   end
   result = item_collection_type["collectionType"].include?("Research")
   @log_data[:item_type_is_research?] = result
+
   return result
 end
 
@@ -21,9 +22,11 @@ def location_is_only_research?(location_code)
   return result
 end
 
-def is_research?(data)
-  result = item_type_is_research?(data[:item_type_code]) || location_is_only_research?(data[:location_code])
-  $logger.debug "Evaluating is-research for item #{data[:nypl_source]} #{data[:id]}: #{result}", @log_data
+def is_research?(bib_id, item_data)
+  result = is_mixed_bib?(bib_id) ||
+    item_type_is_research?(item_data[:item_type_code]) ||
+    location_is_only_research?(item_data[:location_code])
+  $logger.debug "Evaluating is-research for bib #{bib_id} item #{item_data[:nypl_source]} #{item_data[:id]}: #{result}", @log_data
   return result
 end
 
