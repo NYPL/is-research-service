@@ -60,7 +60,7 @@ while true
   ids = results.field_values 'id'
 
   if ids.empty?
-    puts "Got through the bibs!"
+    puts "Got through the items!"
     break
   end
 
