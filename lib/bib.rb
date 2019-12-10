@@ -6,7 +6,7 @@ class Bib < MarcRecord
   def is_research?
     begin
       items = get_platform_api_data items_path
-      result = is_partner? || is_mixed_bib? || first_item_is_research?(items)
+      result = is_partner? || first_item_is_research?(items) || is_mixed_bib?
     rescue NotFoundError => e
       bib = get_platform_api_data bib_path
       raise DeletedError if bib["deleted"]
