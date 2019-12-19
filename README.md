@@ -58,5 +58,8 @@ Given that gems are installed with the --deployment flag, Bundler will complain 
 
 ``bundle exec rspec -fd``
 
+## Scripts
+The `scripts` directory contains code used for a one time processing of an export of the `itemservice` sql database run locally. The scripts will not be actively maintained with the codebase. They are preserved for reference purposes.
+
 ## Deploy
 Deployments are entirely handled by Travis-ci.com. To deploy to development, qa, or production, commit code to the development, qa, and master branches on origin, respectively.

@@ -11,7 +11,12 @@ class Item < MarcRecord
       result = true
     else
       set_properties(data)
-      result = item_type_is_research? || location_is_only_research?
+      item_type_check = item_type_is_research?
+      location_check = location_is_only_research?
+
+      raise DataError.new("Result could not be determined") if item_type_check.nil? && location_check.nil?
+
+      result = item_type_check || location_check
     end
 
     $logger.debug "Evaluating is-research for item #{nypl_source} #{id}: #{result}", @log_data
@@ -35,8 +40,8 @@ class Item < MarcRecord
   def item_type_is_research?
     item_collection_type = $nypl_core.by_catalog_item_type[item_type_code]
     if item_collection_type.nil?
-      $logger.error "Unknown item_type #{item_type_code}"
-      raise DataError.new("This item's catalog item type [#{item_type_code}] is not reflected in NYPL Core")
+      $logger.warn "This item's catalog item type [#{item_type_code}] is not reflected in NYPL Core"
+      return nil
     end
     result = item_collection_type["collectionType"].include?("Research")
     @log_data[:item_type_is_research?] = result
@@ -46,11 +51,10 @@ class Item < MarcRecord
   def location_is_only_research?
     sierra_location = $nypl_core.by_sierra_location[location_code]
     if sierra_location.nil?
-      $logger.error "Unknown location_code #{location_code}"
-      raise DataError.new("This item's Sierra location code [#{location_code}] is not reflected in NYPL Core")
+      $logger.warn "This item's Sierra location code [#{location_code}] is not reflected in NYPL Core"
+      return nil
     end
-    collection_types = sierra_location["collectionTypes"]
-    result = collection_types == ["Research"]
+    result = sierra_location["collectionTypes"] == ["Research"]
     @log_data[:location_is_only_research] = result
     return result
   end
