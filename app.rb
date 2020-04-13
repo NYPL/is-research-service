@@ -54,6 +54,7 @@ def handle_is_research(event, type)
     $logger.debug "Handling is-research for #{nypl_source} #{id}", { nypl_source: nypl_source, id: id}
 
     instance = type.new(nypl_source, id)
+
     respond 200, { nyplSource: instance.nypl_source, id: instance.id, isResearch: instance.is_research? }
   rescue ParameterError => e
     respond 400, message: "ParameterError: #{e.message}"
