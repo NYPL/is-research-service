@@ -6,11 +6,8 @@ gem 'aws-sdk-kms'
 
 
 group :test do
-  gem "test-unit"
   gem "rspec"
   gem 'webmock'
 end
 
 gem "json", "~> 2.3"
-
-gem "pry-nav", "~> 0.3.0"
