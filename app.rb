@@ -1,13 +1,12 @@
-require 'httparty'
 require 'json'
 require 'nypl_log_formatter'
 
-require_relative 'lib/item'
-require_relative 'lib/bib'
-require_relative 'lib/platform_api_client'
-require_relative 'lib/kms_client'
-require_relative 'lib/nypl_core'
-require_relative 'lib/errors'
+require_relative 'layer/lib/item'
+require_relative 'layer/lib/bib'
+require_relative 'layer/lib/platform_api_client'
+require_relative 'layer/lib/kms_client'
+require_relative 'layer/lib/nypl_core'
+require_relative 'layer/lib/errors'
 
 def init
   return if $initialized

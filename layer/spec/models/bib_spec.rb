@@ -17,8 +17,8 @@ describe Bib do
   ]
 
   before(:each) do
-    $platform_api = PlatformApiClient.new
-    $nypl_core = NyplCore.new
+    # $platform_api = PlatformApiClient.new
+    # $nypl_core = NyplCore.new
 
     KmsClient.aws_kms_client.stub_responses(:decrypt, -> (context) {
       # "Decrypt" by subbing "encrypted" with "decrypted" in string:
@@ -58,10 +58,13 @@ describe Bib do
     )
   end
 
-  describe "is_research?" do
+  describe "#is_research?" do
     it "should declare partner record as research" do
       test_bib = test_bibs[0]
-      expect(test_bib[:bib].is_research?).to eq(test_bib[:result])
+
+      result = test_bib[:bib].is_research?
+      puts result
+      expect(result).to eq(test_bib[:result])
     end
 
     it "should declare a bib with 0 items as research" do

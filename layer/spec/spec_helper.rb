@@ -1,13 +1,11 @@
 require 'json'
 require 'nypl_log_formatter'
+require 'spec_helper'
+require 'webmock/rspec'
 
-require_relative '../lib/platform_api_client'
-require_relative '../lib/kms_client'
-require_relative '../lib/item'
-require_relative '../lib/nypl_core'
-require_relative '../app'
+require_relative '../lib/bib'
 
-ENV['LOG_LEVEL'] ||= 'error'
+ENV['LOG_LEVEL'] ||= 'info'
 ENV['APP_ENV'] = 'test'
 ENV['PLATFORM_API_BASE_URL'] = 'https://example.com/api/v0.1/'
 ENV['NYPL_OAUTH_ID'] = Base64.strict_encode64 'fake-client'

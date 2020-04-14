@@ -9,6 +9,8 @@ class PlatformApiClient
     raise 'Missing config: NYPL_OAUTH_ID is unset' if ENV['NYPL_OAUTH_ID'].nil? || ENV['NYPL_OAUTH_ID'].empty?
     raise 'Missing config: NYPL_OAUTH_SECRET is unset' if ENV['NYPL_OAUTH_SECRET'].nil? || ENV['NYPL_OAUTH_SECRET'].empty?
 
+    binding.pry
+
     kms_client = KmsClient.new
     @client_id = kms_client.decrypt(ENV['NYPL_OAUTH_ID'])
     @client_secret = kms_client.decrypt(ENV['NYPL_OAUTH_SECRET'])

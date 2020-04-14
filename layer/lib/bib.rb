@@ -1,4 +1,6 @@
-require 'httparty'
+require_relative 'marc_record'
+require_relative 'errors'
+require_relative 'item'
 
 class Bib < MarcRecord
   @@mixed_bib_ids = nil
@@ -25,7 +27,7 @@ class Bib < MarcRecord
       .split("\n")
       .map { |bnum| bnum.strip.sub(/^b/, '').chop }
 
-      $logger.debug "Loaded #{@@mixed_bib_ids.size} mixed bib ids"
+      $logger.info "Loaded #{@@mixed_bib_ids.size} mixed bib ids"
     end
 
     is_mixed_bib = @@mixed_bib_ids.include? id

@@ -1,10 +1,25 @@
+require_relative 'platform_api_client'
+require_relative 'nypl_core'
+
 class MarcRecord
   attr_reader :nypl_source, :id, :is_partner
 
   def initialize(nypl_source, id)
+    init
+
     @nypl_source = nypl_source
     @id = id
     @log_data = {}
+  end
+
+  def init
+    return if $initialized
+
+    $nypl_core = NyplCore.new
+    $logger = NyplLogFormatter.new(STDOUT, level: ENV['LOG_LEVEL'] || 'info')
+    $platform_api = PlatformApiClient.new
+
+    $initialized = true
   end
 
   def is_partner?
@@ -18,8 +33,6 @@ class MarcRecord
 
     raise NotFoundError unless response["data"]
 
-    data = response["data"]
-
-    data
+    response["data"]
   end
 end
