@@ -15,9 +15,7 @@ https://github.com/NYPL/nypl-core/blob/master/vocabularies/business-logic/nyplRe
 
 ``bundle install; bundle install --deployment``
 
-If you get an error ``You must use Bundler 2 or greater with this lockfile.``
-
-run
+If you get the error ``You must use Bundler 2 or greater with this lockfile.`` run
 
 ``gem install bundler -v 2.0.2``
 
@@ -32,6 +30,16 @@ All config is in `sam.[ENVIRONMENT].yml` templates, encrypted as necessary.
  * Merge `development` > `qa`
  * Merge `qa` > `master`
  * Tag version bump in `master`
+
+### Updating Lambda Layer
+ * Once any change to the files within `is-research-layer` have been developed and reviewed, from the main directory, run
+
+ ``zip -r is-research-layer is-research-layer/*``
+
+ * Create a new version of the layer from the AWS console under Lambda service.
+ * Update Lambdas that pull in this layer by changing the version number in the SAM template.
+  * Lambdas using the "isResearchLayer":
+    * `SubjectHeadingPoster-qa` (forthcoming)
 
 ### Running Events Locally
 The following will invoke the lambda against various mock events. Replace `[event]` with one of the mock events listed below.
