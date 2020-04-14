@@ -4,6 +4,8 @@ This is a Ruby app deployed as an AWS Lambda behind API Gateway to serve:
 
 ``GET /api/v0.1/items/{nyplSource}/{id}/is-research``
 
+The `is-research-layer` directory corresponds to the Lambda Layer used for the forthcoming `SubjectHeadingPoster`. Instructions for updating and redeploying the layer are below.
+
 The business logic implemented in this code base for determining if an item or bib is research or circulating is documented here:
 
 https://github.com/NYPL/nypl-core/blob/master/vocabularies/business-logic/nyplResearchItemAndBibDetermination.md
@@ -20,7 +22,7 @@ run
 ``gem install bundler -v 2.0.2``
 
 ### Config
-All config is in sam.[ENVIRONMENT].yml templates, encrypted as necessary.
+All config is in `sam.[ENVIRONMENT].yml` templates, encrypted as necessary.
 
 ## Contributing
 ### Git Workflow
@@ -32,7 +34,7 @@ All config is in sam.[ENVIRONMENT].yml templates, encrypted as necessary.
  * Tag version bump in `master`
 
 ### Running Events Locally
-The following will invoke the lambda against the sample event.json
+The following will invoke the lambda against various mock events. Replace `[event]` with one of the mock events listed below.
 
 ``sam local invoke --event [event] --region us-east-1 --template sam.local.yml --profile [aws profile]``
 

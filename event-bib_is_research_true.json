@@ -84,7 +84,7 @@
   },
   "pathParameters":{
     "nyplSource":"sierra-nypl",
-    "id":"17906651"
+    "id":"10036259"
   },
   "stageVariables":null,
   "path":"/api/v0.1/bibs/sierra-nypl/17906651/is-research",
