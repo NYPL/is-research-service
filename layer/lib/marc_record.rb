@@ -5,8 +5,6 @@ class MarcRecord
   attr_reader :nypl_source, :id, :is_partner
 
   def initialize(nypl_source, id)
-    init
-
     @nypl_source = nypl_source
     @id = id
     @log_data = {}
