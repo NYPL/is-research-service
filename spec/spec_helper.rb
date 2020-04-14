@@ -3,7 +3,7 @@ require 'nypl_log_formatter'
 require 'spec_helper'
 require 'webmock/rspec'
 
-require_relative '../layer/lib/bib'
+require_relative '../is-research-layer/lib/bib'
 
 ENV['LOG_LEVEL'] ||= 'info'
 ENV['APP_ENV'] = 'test'
