@@ -12,7 +12,7 @@ script:
 deploy:
 - provider: lambda
   function_name: IsResearchService-qa
-  description: A small service for determining if an item is research
+  description: A small service for determining if an item or bib is research
   region: us-east-1
   role: arn:aws:iam::946183545209:role/lambda-full-access
   runtime: ruby2.5
@@ -31,7 +31,7 @@ deploy:
     branch: qa
 - provider: lambda
   function_name: IsResearchService-production
-  description: A small service for queuing metadata sync requests to SCSB
+  description: A small service for determining if an item or bib is research
   region: us-east-1
   role: arn:aws:iam::946183545209:role/lambda-full-access
   runtime: ruby2.5
