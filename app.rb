@@ -1,13 +1,12 @@
-require 'httparty'
 require 'json'
 require 'nypl_log_formatter'
 
-require_relative 'lib/item'
-require_relative 'lib/bib'
-require_relative 'lib/platform_api_client'
-require_relative 'lib/kms_client'
-require_relative 'lib/nypl_core'
-require_relative 'lib/errors'
+require_relative 'is-research-layer/lib/item'
+require_relative 'is-research-layer/lib/bib'
+require_relative 'is-research-layer/lib/platform_api_client'
+require_relative 'is-research-layer/lib/kms_client'
+require_relative 'is-research-layer/lib/nypl_core'
+require_relative 'is-research-layer/lib/errors'
 
 def init
   return if $initialized
@@ -54,6 +53,7 @@ def handle_is_research(event, type)
     $logger.debug "Handling is-research for #{nypl_source} #{id}", { nypl_source: nypl_source, id: id}
 
     instance = type.new(nypl_source, id)
+
     respond 200, { nyplSource: instance.nypl_source, id: instance.id, isResearch: instance.is_research? }
   rescue ParameterError => e
     respond 400, message: "ParameterError: #{e.message}"

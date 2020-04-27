@@ -1,7 +1,5 @@
 source "https://rubygems.org"
 
-gem "httparty"
-
 gem 'nypl_log_formatter', '~> 0.1.2'
 
 gem 'aws-sdk-kms'

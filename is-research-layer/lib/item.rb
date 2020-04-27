@@ -1,4 +1,3 @@
-require 'httparty'
 require_relative 'marc_record'
 
 class Item < MarcRecord

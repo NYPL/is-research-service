@@ -4,6 +4,8 @@ This is a Ruby app deployed as an AWS Lambda behind API Gateway to serve:
 
 ``GET /api/v0.1/items/{nyplSource}/{id}/is-research``
 
+The `is-research-layer` directory corresponds to the Lambda Layer used for the forthcoming `SubjectHeadingPoster`. Instructions for updating and redeploying the layer are below.
+
 The business logic implemented in this code base for determining if an item or bib is research or circulating is documented here:
 
 https://github.com/NYPL/nypl-core/blob/master/vocabularies/business-logic/nyplResearchItemAndBibDetermination.md
@@ -13,14 +15,12 @@ https://github.com/NYPL/nypl-core/blob/master/vocabularies/business-logic/nyplRe
 
 ``bundle install; bundle install --deployment``
 
-If you get an error ``You must use Bundler 2 or greater with this lockfile.``
-
-run
+If you get the error ``You must use Bundler 2 or greater with this lockfile.`` run
 
 ``gem install bundler -v 2.0.2``
 
 ### Config
-All config is in sam.[ENVIRONMENT].yml templates, encrypted as necessary.
+All config is in `sam.[ENVIRONMENT].yml` templates, encrypted as necessary.
 
 ## Contributing
 ### Git Workflow
@@ -31,8 +31,18 @@ All config is in sam.[ENVIRONMENT].yml templates, encrypted as necessary.
  * Merge `qa` > `master`
  * Tag version bump in `master`
 
+### Updating Lambda Layer
+ * Once any change to the files within `is-research-layer` have been developed and reviewed, from the main directory, run
+
+ ``zip -r is-research-layer is-research-layer/*``
+
+ * Create a new version of the layer from the AWS console under Lambda service.
+ * Update Lambdas that pull in this layer by changing the version number in the SAM template.
+  * Lambdas using the "isResearchLayer":
+    * `SubjectHeadingPoster-qa` (forthcoming)
+
 ### Running Events Locally
-The following will invoke the lambda against the sample event.json
+The following will invoke the lambda against various mock events. Replace `[event]` with one of the mock events listed below.
 
 ``sam local invoke --event [event] --region us-east-1 --template sam.local.yml --profile [aws profile]``
 

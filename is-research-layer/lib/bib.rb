@@ -1,4 +1,6 @@
-require 'httparty'
+require_relative 'marc_record'
+require_relative 'errors'
+require_relative 'item'
 
 class Bib < MarcRecord
   @@mixed_bib_ids = nil
@@ -21,11 +23,11 @@ class Bib < MarcRecord
   private
   def is_mixed_bib?
     if @@mixed_bib_ids.nil?
-      @@mixed_bib_ids = File.read('data/mixed-bibs.csv')
+      @@mixed_bib_ids = File.read('is-research-layer/data/mixed-bibs.csv')
       .split("\n")
       .map { |bnum| bnum.strip.sub(/^b/, '').chop }
 
-      $logger.debug "Loaded #{@@mixed_bib_ids.size} mixed bib ids"
+      $logger.info "Loaded #{@@mixed_bib_ids.size} mixed bib ids"
     end
 
     is_mixed_bib = @@mixed_bib_ids.include? id

@@ -1,6 +1,3 @@
-require 'spec_helper'
-require 'webmock/rspec'
-
 describe Item do
   test_items = [
     {
