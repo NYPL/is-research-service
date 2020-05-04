@@ -1,12 +1,7 @@
 require 'json'
 require 'nypl_log_formatter'
 
-require_relative 'is-research-layer/lib/item'
-require_relative 'is-research-layer/lib/bib'
-require_relative 'is-research-layer/lib/platform_api_client'
-require_relative 'is-research-layer/lib/kms_client'
-require_relative 'is-research-layer/lib/nypl_core'
-require_relative 'is-research-layer/lib/errors'
+require '/opt/is-research-layer/lib/bib'
 
 def init
   return if $initialized

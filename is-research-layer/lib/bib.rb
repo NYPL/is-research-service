@@ -23,7 +23,8 @@ class Bib < MarcRecord
   private
   def is_mixed_bib?
     if @@mixed_bib_ids.nil?
-      @@mixed_bib_ids = File.read('is-research-layer/data/mixed-bibs.csv')
+      mixed_bib_csv_path = 'opt/is-research-layer/data/mixed-bibs.csv'
+      @@mixed_bib_ids = File.read(mixed_bib_csv_path)
       .split("\n")
       .map { |bnum| bnum.strip.sub(/^b/, '').chop }
 
