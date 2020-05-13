@@ -57,7 +57,7 @@ The following will invoke the lambda against various mock events. Replace `[even
 ### Running Server Locally
 To run the server locally:
 
-``sam local start-api --region us-east-1 --template sam.local.yml --profile [aws profile]``
+``sam local start-api --template sam.local.yml``
 
 ### Gemfile Changes
 Given that gems are installed with the --deployment flag, Bundler will complain if you make changes to the Gemfile. To make changes to the Gemfile, exit deployment mode:
@@ -67,6 +67,7 @@ Given that gems are installed with the --deployment flag, Bundler will complain 
 ## Testing
 
 ``bundle exec rspec -fd``
+Make sure to also run a test event, as described above as a form of end-to-end testing.
 
 ## Scripts
 The `scripts` directory contains code used for a one time processing of an export of the `itemservice` sql database run locally. The scripts will not be actively maintained with the codebase. They are preserved for reference purposes.
