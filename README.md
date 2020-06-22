@@ -1,5 +1,7 @@
 # is-research-service
 
+[![Build Status](https://travis-ci.com/NYPL/is-research-service.svg?branch=master)](https://travis-ci.com/NYPL/is-research-service) 
+
 This is a Ruby app deployed as an AWS Lambda behind API Gateway to serve:
 
 ``GET /api/v0.1/items/{nyplSource}/{id}/is-research``
