@@ -10,8 +10,6 @@ def init
   $logger = NyplLogFormatter.new(STDOUT, level: ENV['LOG_LEVEL'] || 'info')
   $platform_api = PlatformApiClient.new
 
-  $nypl_core = NyplCore.new
-
   $mixed_bib_ids = File.read('data/mixed-bibs.csv')
   .split("\n")
   .map { |bnum| bnum.strip.sub(/^b/, '').chop }
