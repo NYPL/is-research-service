@@ -3,16 +3,12 @@ require_relative 'errors'
 require_relative 'item'
 
 class Bib < MarcRecord
-  @@mixed_bib_ids = nil
-
   def is_research?
     begin
-      items = get_platform_api_data items_path
-      result = is_partner? || first_item_is_research?(items) || is_mixed_bib?
+      result = is_partner? || is_mixed_bib? || first_item_is_research?
     rescue NotFoundError => e
       bib = get_platform_api_data bib_path
       raise DeletedError if bib["deleted"]
-      result = !!bib
     end
 
     $logger.debug "Evaluating is-research for bib #{nypl_source} #{id}: #{result}", @log_data
@@ -22,22 +18,16 @@ class Bib < MarcRecord
 
   private
   def is_mixed_bib?
-    if @@mixed_bib_ids.nil?
-      @@mixed_bib_ids = File.read('/opt/is-research-layer/data/mixed-bibs.csv')
-      .split("\n")
-      .map { |bnum| bnum.strip.sub(/^b/, '').chop }
-
-      $logger.info "Loaded #{@@mixed_bib_ids.size} mixed bib ids"
-    end
-
-    is_mixed_bib = @@mixed_bib_ids.include? id
+    is_mixed_bib = $mixed_bib_ids.include? id
     $logger.debug "Determined is_mixed_bib=#{is_mixed_bib} for #{id}"
 
     is_mixed_bib
   end
 
-  def first_item_is_research?(items)
+  def first_item_is_research?
+    items = get_platform_api_data items_path
     item_record = items[0]
+
     item = Item.new(item_record["nyplSource"], item_record["id"])
     result = item.is_research?(item_record)
 

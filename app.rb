@@ -1,7 +1,7 @@
 require 'json'
 require 'nypl_log_formatter'
 
-require '/opt/is-research-layer/lib/bib'
+require_relative 'lib/bib'
 
 def init
   return if $initialized
@@ -9,6 +9,12 @@ def init
   $nypl_core = NyplCore.new
   $logger = NyplLogFormatter.new(STDOUT, level: ENV['LOG_LEVEL'] || 'info')
   $platform_api = PlatformApiClient.new
+
+  $nypl_core = NyplCore.new
+
+  $mixed_bib_ids = File.read('data/mixed-bibs.csv')
+  .split("\n")
+  .map { |bnum| bnum.strip.sub(/^b/, '').chop }
 
   $initialized = true
 end

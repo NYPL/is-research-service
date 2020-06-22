@@ -34,7 +34,7 @@ class PlatformApiClient
         http.request(request)
       end
 
-      $logger.debug "Got platform api response", { code: response.code, body: response.body }
+      $logger.debug "Got platform api response", { code: response.code }
 
       parse_json_response response
 
