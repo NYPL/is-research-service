@@ -37,7 +37,7 @@ class Item < MarcRecord
   end
 
   def item_type_is_research?
-    item_collection_type = $nypl_core.by_catalog_item_type[item_type_code]
+    item_collection_type = $nypl_core.check_catalog_item_type(item_type_code)
     if item_collection_type.nil?
       $logger.warn "This item's catalog item type [#{item_type_code}] is not reflected in NYPL Core"
       return nil
@@ -48,7 +48,7 @@ class Item < MarcRecord
   end
 
   def location_is_only_research?
-    sierra_location = $nypl_core.by_sierra_location[location_code]
+    sierra_location = $nypl_core.check_sierra_location(location_code)
     if sierra_location.nil?
       $logger.warn "This item's Sierra location code [#{location_code}] is not reflected in NYPL Core"
       return nil

@@ -3,9 +3,12 @@ require 'nypl_log_formatter'
 require 'spec_helper'
 require 'webmock/rspec'
 
-require_relative '../is-research-layer/lib/bib'
+require 'simplecov'
+SimpleCov.start
 
-ENV['LOG_LEVEL'] ||= 'info'
+require_relative '../lib/bib'
+
+ENV['LOG_LEVEL'] ||= 'error'
 ENV['APP_ENV'] = 'test'
 ENV['PLATFORM_API_BASE_URL'] = 'https://example.com/api/v0.1/'
 ENV['NYPL_OAUTH_ID'] = Base64.strict_encode64 'fake-client'
