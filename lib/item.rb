@@ -20,7 +20,7 @@ class Item < MarcRecord
 
     $logger.debug "Evaluating is-research for item #{nypl_source} #{id}: #{result}", @log_data
 
-    return result
+    result
   end
 
   def validate_record(data)
