@@ -1,3 +1,6 @@
+require_relative 'platform_api_client'
+require_relative 'nypl_core'
+
 class MarcRecord
   attr_reader :nypl_source, :id, :is_partner
 
@@ -18,8 +21,6 @@ class MarcRecord
 
     raise NotFoundError unless response["data"]
 
-    data = response["data"]
-
-    data
+    response["data"]
   end
 end

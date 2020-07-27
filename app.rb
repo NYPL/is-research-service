@@ -1,13 +1,7 @@
-require 'httparty'
 require 'json'
 require 'nypl_log_formatter'
 
-require_relative 'lib/item'
 require_relative 'lib/bib'
-require_relative 'lib/platform_api_client'
-require_relative 'lib/kms_client'
-require_relative 'lib/nypl_core'
-require_relative 'lib/errors'
 
 def init
   return if $initialized
@@ -15,6 +9,10 @@ def init
   $nypl_core = NyplCore.new
   $logger = NyplLogFormatter.new(STDOUT, level: ENV['LOG_LEVEL'] || 'info')
   $platform_api = PlatformApiClient.new
+
+  $mixed_bib_ids = File.read('data/mixed-bibs.csv')
+  .split("\n")
+  .map { |bnum| bnum.strip.sub(/^b/, '').chop }
 
   $initialized = true
 end
@@ -54,6 +52,7 @@ def handle_is_research(event, type)
     $logger.debug "Handling is-research for #{nypl_source} #{id}", { nypl_source: nypl_source, id: id}
 
     instance = type.new(nypl_source, id)
+
     respond 200, { nyplSource: instance.nypl_source, id: instance.id, isResearch: instance.is_research? }
   rescue ParameterError => e
     respond 400, message: "ParameterError: #{e.message}"

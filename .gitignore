@@ -1,2 +1,5 @@
 vendor
 .aws
+config
+coverage
+.bundle

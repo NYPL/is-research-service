@@ -1,8 +1,6 @@
 source "https://rubygems.org"
 
-gem "httparty"
-
-gem 'nypl_log_formatter', '~> 0.1.2'
+gem 'nypl_log_formatter'
 
 gem 'aws-sdk-kms'
 
@@ -11,6 +9,7 @@ group :test do
   gem "mocha"
   gem 'rspec'
   gem 'webmock'
+  gem 'simplecov'
 end
 
 group :DEVELOPMENT do
