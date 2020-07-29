@@ -17,23 +17,25 @@ describe Bib do
   ]
 
   before(:each) do
+    stub_request(:get, ENV['NYPL_CORE_S3_BASE_URL'] + "by_catalog_item_type.json")
+    .to_return(status: 200, body: File.read("./spec/fixtures/by_catalog_item_type.json"))
+    
+    stub_request(:get, ENV['NYPL_CORE_S3_BASE_URL'] + "by_sierra_location.json")
+    .to_return(status: 200, body: File.read("./spec/fixtures/by_sierra_location.json"))
+    
+    stub_request(:post, "#{ENV['NYPL_OAUTH_URL']}oauth/token").to_return(status: 200, body: '{ "access_token": "fake-access-token" }')
+    
     $platform_api = PlatformApiClient.new
     $nypl_core = NyplCore.new
+    $logger = NyplLogFormatter.new(STDOUT, level: ENV['LOG_LEVEL'] || 'info')
+    $mixed_bib_ids = File.read('data/mixed-bibs.csv')
+    .split("\n")
+    .map { |bnum| bnum.strip.sub(/^b/, '').chop }
 
     KmsClient.aws_kms_client.stub_responses(:decrypt, -> (context) {
       # "Decrypt" by subbing "encrypted" with "decrypted" in string:
       { plaintext: context.params[:ciphertext_blob].gsub('encrypted', 'decrypted') }
     })
-
-    $logger = NyplLogFormatter.new(STDOUT, level: ENV['LOG_LEVEL'] || 'info')
-
-    stub_request(:get, ENV['NYPL_CORE_S3_BASE_URL'] + "by_catalog_item_type.json")
-    .to_return(status: 200, body: File.read("./spec/fixtures/by_catalog_item_type.json"))
-
-    stub_request(:get, ENV['NYPL_CORE_S3_BASE_URL'] + "by_sierra_location.json")
-    .to_return(status: 200, body: File.read("./spec/fixtures/by_sierra_location.json"))
-
-    stub_request(:post, "#{ENV['NYPL_OAUTH_URL']}oauth/token").to_return(status: 200, body: '{ "access_token": "fake-access-token" }')
 
     test_bibs.each do |test_bib|
       stub_request(:get,
@@ -58,9 +60,10 @@ describe Bib do
     )
   end
 
-  describe "is_research?" do
+  describe "#is_research?" do
     it "should declare partner record as research" do
       test_bib = test_bibs[0]
+
       expect(test_bib[:bib].is_research?).to eq(test_bib[:result])
     end
 

@@ -1,6 +1,3 @@
-require 'spec_helper'
-require 'webmock/rspec'
-
 describe PlatformApiClient do
   before(:each) do
     KmsClient.aws_kms_client.stub_responses(:decrypt, -> (context) {

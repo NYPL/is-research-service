@@ -3,14 +3,16 @@ require 'open-uri'
 class NyplCore
   def initialize
     @mappings = {}
-  end
-
-  def by_sierra_location
     by_mapping('by_sierra_location.json')
+    by_mapping('by_catalog_item_type.json')
   end
 
-  def by_catalog_item_type
-    by_mapping('by_catalog_item_type.json')
+  def check_sierra_location (location_code)
+    @mappings['by_sierra_location.json'][location_code]
+  end
+
+  def check_catalog_item_type (item_type_code)
+    @mappings['by_catalog_item_type.json'][item_type_code]
   end
 
   private
