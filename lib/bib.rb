@@ -4,7 +4,7 @@ require_relative 'item'
 
 class Bib < MarcRecord
   def is_research?
-    result = FALSE
+    result = false
     begin
       result = is_partner? || is_mixed_bib? || first_item_is_research?
     rescue NotFoundError => e
