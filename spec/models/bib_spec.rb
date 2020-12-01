@@ -1,20 +1,11 @@
 require 'spec_helper'
 
 describe Bib do
-  test_bibs = [
-    {
-      bib: Bib.new("recap-pul", "7843570"), # partner record
-      result: true
-    },
-    {
-      bib: Bib.new("sierra-nypl", "17906651"), # has an item that is research
-      result: true
-    },
-    {
-      bib: Bib.new("sierra-nypl", "10036259"), # mixed bib that calls Bib#is_mixed_bib?
-      result: true
-    }
-  ]
+  partner_record = Bib.new("recap-pul", "7843570")
+  bib_with_research_item = Bib.new("sierra-nypl", "17906651")
+  mixed_bib = Bib.new("sierra-nypl", "10036259")
+  zero_item_bib = Bib.new("sierra-nypl", "12345678")
+  deleted_bib = Bib.new('sierra-nypl', '19060447')
 
   before(:each) do
     stub_request(:get, ENV['NYPL_CORE_S3_BASE_URL'] + "by_catalog_item_type.json")
@@ -37,9 +28,9 @@ describe Bib do
       { plaintext: context.params[:ciphertext_blob].gsub('encrypted', 'decrypted') }
     })
 
-    test_bibs.each do |test_bib|
+    [partner_record, bib_with_research_item, mixed_bib].each do |test_bib|
       stub_request(:get,
-        "#{ENV['PLATFORM_API_BASE_URL']}bibs/#{test_bib[:bib].nypl_source}/#{test_bib[:bib].id}/items").to_return(status: 200, body: File.read("./spec/fixtures/bib_items_#{test_bib[:bib].id}.json")
+        "#{ENV['PLATFORM_API_BASE_URL']}bibs/#{test_bib.nypl_source}/#{test_bib.id}/items").to_return(status: 200, body: File.read("./spec/fixtures/bib_items_#{test_bib.id}.json")
       )
     end
 
@@ -63,29 +54,23 @@ describe Bib do
 
   describe "#is_research?" do
     it "should declare partner record as research" do
-      test_bib = test_bibs[0]
-
-      expect(test_bib[:bib].is_research?).to eq(test_bib[:result])
+      expect(partner_record.is_research?).to eq(true)
     end
 
     it "should declare a bib with 0 items as research" do
-      test_bib = Bib.new("sierra-nypl", "12345678")
-      expect(test_bib.is_research?).to eq(true)
+      expect(zero_item_bib.is_research?).to eq(true)
     end
 
     it "should declare a bib with at least one research item as research" do
-      test_bib = test_bibs[1]
-      expect(test_bib[:bib].is_research?).to eq(true)
+      expect(bib_with_research_item.is_research?).to eq(true)
     end
 
     it "should throw DeletedError for a deleted bib record" do
-      test_bib = Bib.new('sierra-nypl', '19060447')
-      expect { test_bib.is_research? }.to raise_error(DeletedError)
+      expect { deleted_bib.is_research? }.to raise_error(DeletedError)
     end
 
     it "should declare a mixed bib as research" do
-      test_bib = test_bibs[2]
-      expect(test_bib[:bib].is_research?).to eq(test_bib[:result])
+      expect(mixed_bib.is_research?).to eq(true)
     end
   end
 end
