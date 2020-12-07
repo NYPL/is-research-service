@@ -10,6 +10,8 @@ class Bib < MarcRecord
     rescue NotFoundError => e
       bib = get_platform_api_data bib_path
       raise DeletedError if bib["deleted"]
+      # Only a research bib would exist with no items
+      result = true
     end
 
     $logger.debug "Evaluating is-research for bib #{nypl_source} #{id}: #{result}", @log_data
