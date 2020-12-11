@@ -1,6 +1,6 @@
 # is-research-service
 
-[![Build Status](https://travis-ci.com/NYPL/is-research-service.svg?branch=master)](https://travis-ci.com/NYPL/is-research-service) 
+[![Build Status](https://travis-ci.com/NYPL/is-research-service.svg?branch=production)](https://travis-ci.com/NYPL/is-research-service)
 
 This is a Ruby app deployed as an AWS Lambda behind API Gateway to serve:
 
@@ -10,7 +10,7 @@ The `is-research-layer` directory corresponds to the Lambda Layer used for the f
 
 The business logic implemented in this code base for determining if an item or bib is research or circulating is documented here:
 
-https://github.com/NYPL/nypl-core/blob/master/vocabularies/business-logic/nyplResearchItemAndBibDetermination.md
+https://github.com/NYPL/nypl-core/blob/production/vocabularies/business-logic/nyplResearchItemAndBibDetermination.md
 
 ## Setup
 ### Installation
@@ -30,8 +30,8 @@ All config is in `sam.[ENVIRONMENT].yml` templates, encrypted as necessary.
  * Create PR against `development`.
  * After review, PR author merges.
  * Merge `development` > `qa`
- * Merge `qa` > `master`
- * Tag version bump in `master`
+ * Merge `qa` > `production`
+ * Tag version bump in `production`
 
 ### Updating Lambda Layer
  * Once any change to the files within `is-research-layer` have been developed and reviewed, from the main directory, run
