@@ -4,12 +4,14 @@ require_relative 'item'
 
 class Bib < MarcRecord
   def is_research?
-    result = FALSE
+    result = false
     begin
       result = is_partner? || is_mixed_bib? || first_item_is_research?
     rescue NotFoundError => e
       bib = get_platform_api_data bib_path
       raise DeletedError if bib["deleted"]
+      # Only a research bib would exist with no items
+      result = true
     end
 
     $logger.debug "Evaluating is-research for bib #{nypl_source} #{id}: #{result}", @log_data
