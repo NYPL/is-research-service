@@ -13,7 +13,7 @@ Resources:
           Properties:
             Path: /api/v0.1/{type}/{nyplSource}/{id}/is-research
             Method: get
-      Runtime: ruby2.5
+      Runtime: ruby2.7
       Timeout: 10
       Environment:
         Variables:
