@@ -1,6 +1,6 @@
 language: ruby
 rvm:
-  - 2.5
+  - 2.7
 before_install:
 - gem update --system
 - gem install bundler
@@ -16,7 +16,7 @@ deploy:
   description: A small service for determining if an item or bib is research
   region: us-east-1
   role: arn:aws:iam::224280085904:role/lambda_basic_execution
-  runtime: ruby2.5
+  runtime: ruby2.7
   module_name: app
   handler_name: handle_event
   environment_variables:
@@ -35,7 +35,7 @@ deploy:
   description: A small service for determining if an item or bib is research
   region: us-east-1
   role: arn:aws:iam::946183545209:role/lambda-full-access
-  runtime: ruby2.5
+  runtime: ruby2.7
   module_name: app
   handler_name: handle_event
   environment_variables:
@@ -54,7 +54,7 @@ deploy:
   description: A small service for determining if an item or bib is research
   region: us-east-1
   role: arn:aws:iam::946183545209:role/lambda-full-access
-  runtime: ruby2.5
+  runtime: ruby2.7
   module_name: app
   handler_name: handle_event
   environment_variables:
