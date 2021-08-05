@@ -3,12 +3,14 @@ require_relative 'marc_record'
 class Item < MarcRecord
   attr_accessor :item_type_code, :location_code
 
-  def is_research?(data=get_platform_api_data(item_path))
-    validate_record(data)
-
+  def is_research?(data=nil)
     if is_partner?
       result = true
     else
+      # Fetch item data so can check Item Type and location
+      data = get_platform_api_data(item_path) if data.nil?
+      validate_record(data)
+
       set_properties(data)
       item_type_check = item_type_is_research?
       location_check = location_is_only_research?

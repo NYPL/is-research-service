@@ -5,7 +5,7 @@ describe Item do
       result: false
     },
     {
-      item: Item.new("recap-pul", "6739525"), # partner item
+      item: Item.new("recap-pul", "6739525"), # partner (PUL) item
       result: true
     },
     {
@@ -27,6 +27,10 @@ describe Item do
     {
       item: Item.new("sierra-nypl", "36387834"), # real ID but unknown location_code and item_type_code
       result: false
+    },
+    {
+      item: Item.new("recap-hl", "232037775380003941"), # partner (HL) item
+      result: true
     }
   ]
 
@@ -57,8 +61,13 @@ describe Item do
   end
 
   describe "#is_research?" do
-    it "should declare partner items as research" do
+    it "should declare partner (pul) items as research" do
       test_item = test_items[1]
+      expect(test_item[:item].is_research?).to eq(test_item[:result])
+    end
+
+    it "should declare partner (hl) items as research" do
+      test_item = test_items[7]
       expect(test_item[:item].is_research?).to eq(test_item[:result])
     end
 
