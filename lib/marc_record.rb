@@ -2,7 +2,7 @@ require_relative 'platform_api_client'
 require_relative 'nypl_core'
 
 class MarcRecord
-  attr_reader :nypl_source, :id, :is_partner
+  attr_reader :nypl_source, :id
 
   def initialize(nypl_source, id)
     @nypl_source = nypl_source
@@ -11,7 +11,7 @@ class MarcRecord
   end
 
   def is_partner?
-    result = nypl_source == "recap-cul" || nypl_source == "recap-pul"
+    result = /^recap-/.match? nypl_source
     @log_data[:is_partner?] = result
     return result
   end
