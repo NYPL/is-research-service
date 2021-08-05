@@ -1,7 +1,8 @@
 require 'spec_helper'
 
 describe Bib do
-  partner_record = Bib.new("recap-pul", "7843570")
+  partner_record_pul = Bib.new("recap-pul", "7843570")
+  partner_record_hl = Bib.new("recap-hl", "7843570")
   bib_with_research_item = Bib.new("sierra-nypl", "17906651")
   mixed_bib = Bib.new("sierra-nypl", "10036259")
   zero_item_bib = Bib.new("sierra-nypl", "12345678")
@@ -28,7 +29,7 @@ describe Bib do
       { plaintext: context.params[:ciphertext_blob].gsub('encrypted', 'decrypted') }
     })
 
-    [partner_record, bib_with_research_item, mixed_bib].each do |test_bib|
+    [bib_with_research_item, mixed_bib].each do |test_bib|
       stub_request(:get,
         "#{ENV['PLATFORM_API_BASE_URL']}bibs/#{test_bib.nypl_source}/#{test_bib.id}/items").to_return(status: 200, body: File.read("./spec/fixtures/bib_items_#{test_bib.id}.json")
       )
@@ -54,7 +55,11 @@ describe Bib do
 
   describe "#is_research?" do
     it "should declare partner record as research" do
-      expect(partner_record.is_research?).to eq(true)
+      expect(partner_record_pul.is_research?).to eq(true)
+    end
+
+    it "should declare partner record as research" do
+      expect(partner_record_hl.is_research?).to eq(true)
     end
 
     it "should declare a bib with 0 items as research" do
