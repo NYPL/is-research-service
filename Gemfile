@@ -15,4 +15,5 @@ end
 group :DEVELOPMENT do
   gem "pry"
   gem "dotenv"
+  gem "pg"
 end

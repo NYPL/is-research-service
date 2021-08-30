@@ -1,16 +1,12 @@
 require "pry"
-require 'dotenv'
 require 'nypl_log_formatter'
 require "json"
 require 'pg'
 require 'csv'
 require 'set'
+require './lib/item.rb'
 require './lib/nypl_core.rb'
 require './lib/errors.rb'
-
-require_relative 'utils'
-
-Dotenv.load('./config/local.env')
 
 environment = :development
 
@@ -27,7 +23,6 @@ def init
 
   $nypl_core = NyplCore.new
   $logger = NyplLogFormatter.new(STDOUT, level: 'info')
-  $mixed_bib_ids = nil
   @log_data = {}
 
   $initialized = true
@@ -48,12 +43,11 @@ while true
   puts "from_item_id: #{from_item_id}"
   puts "iterations: #{iterations}"
 
-  conn = PG.connect( host: 'localhost', dbname: 'itemservice', user: 'itemservice')
+  conn = PG.connect( host: ENV['DB_HOST'], dbname: ENV['DB_NAME'], user: ENV['USER'], password: ENV['PASSWORD'])
 
   results = conn.exec(
-    "select id, location, fixed_fields, bib_ids from item " +
-    "where nypl_source='sierra-nypl' and deleted is FALSE and " +
-    "id > '#{from_item_id}' " +
+    "select id, nypl_source, location, fixed_fields, bib_ids from item " +
+    "where deleted is FALSE and id > '#{from_item_id}' " +
     "order by id limit #{params[environment][:limit]}"
   )
 
@@ -66,37 +60,35 @@ while true
 
   conn.close
 
-  results.each do |item|
+  results.each do |db_record|
+    next unless db_record['nypl_source'] == 'sierra-nypl'
+
     begin
-      raise DataError.new("This item record is missing the `bib_ids` property") unless item["bib_ids"]
+      raise DataError.new("This item record is missing the `bib_ids` property") unless db_record["bib_ids"]
 
-      bib_ids = JSON.parse item["bib_ids"]
+      bib_ids = JSON.parse db_record["bib_ids"]
 
-      if bib_ids.any?
-        raise DataError.new("This item record is missing the `fixed_fields` property") unless item["fixed_fields"]
-        raise DataError.new("This item record is missing the `location` property") unless item["location"]
+      if bib_ids.any? { |id| !processed_bibs.include?(id) }
+        raise DataError.new("`fixed_fields` property missing") unless db_record["fixed_fields"]
+        raise DataError.new("`location` property missing") unless db_record["location"]
 
-        location = JSON.parse item["location"]
-        fixed_fields = JSON.parse item["fixed_fields"]
+        id = db_record['id']
+        nypl_source = db_record['nypl_source']
+        location = JSON.parse db_record["location"]
+        fixed_fields = JSON.parse db_record["fixed_fields"]
 
-        item_data = {
-          nypl_source: "sierra-nypl",
-          id: item["id"],
-          item_type_code: fixed_fields["61"]["value"],
-          location_code: location["code"],
-        }
+        item = Item.new(nypl_source, id)
 
         bib_ids.each do |bib_id|
           if !processed_bibs.include?(bib_id)
-            result = is_research?(bib_id, item_data)
+            is_research_csv << [bib_id, item.is_research?(data={'fixedFields' => fixed_fields, 'location' => location})]
             processed_bibs << bib_id
-            is_research_csv << [bib_id, result]
           end
         end
       end
     rescue => e
-      puts item["id"], e
-      is_research_errors_csv << [item["id"], e]
+      puts db_record["id"], e
+      is_research_errors_csv << [db_record["id"], e]
     end
   end
 

@@ -1,3 +1,4 @@
+require './lib/errors.rb'
 require_relative 'marc_record'
 
 class Item < MarcRecord
@@ -26,11 +27,11 @@ class Item < MarcRecord
   end
 
   def validate_record(data)
-    raise DataError("Record has no fixedFields property") unless data["fixedFields"]
-    raise DataError("Record does not have fixedFields 61") unless data["fixedFields"]["61"]
-    raise DataError("Record does not have a value property on fixedFields 61") unless data["fixedFields"]["61"]["value"]
-    raise DataError("Record does not have a location property") unless data["location"]
-    raise DataError("Record does not have a code for location property") unless data["location"]["code"]
+    raise DataError.new("Record has no fixedFields property") unless data["fixedFields"]
+    raise DataError.new("Record does not have fixedFields 61") unless data["fixedFields"]["61"]
+    raise DataError.new("Record does not have a value property on fixedFields 61") unless data["fixedFields"]["61"]["value"]
+    raise DataError.new("Record does not have a location property") unless data["location"]
+    raise DataError.new("Record does not have a code for location property") unless data["location"]["code"]
   end
 
   private
