@@ -4,9 +4,12 @@
 
 This is a Ruby app deployed as an AWS Lambda behind API Gateway to serve:
 
-``GET /api/v0.1/items/{nyplSource}/{id}/is-research``
+```
+GET /api/v0.1/items/{nyplSource}/{id}/is-research
+GET /api/v0.1/bibs/{nyplSource}/{id}/is-research
+```
 
-The business logic implemented in this code base for determining if an item or bib is research or circulating is documented here:
+The service indicates whether the named item or bib is "research" (as opposed to "branch"/"circulating"). The business logic implemented in this codebase for determining if an item or bib is research or circulating is documented here:
 
 https://github.com/NYPL/nypl-core/blob/master/vocabularies/business-logic/nyplResearchItemAndBibDetermination.md
 
