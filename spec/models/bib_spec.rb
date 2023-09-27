@@ -4,7 +4,6 @@ describe Bib do
   partner_record_pul = Bib.new("recap-pul", "7843570")
   partner_record_hl = Bib.new("recap-hl", "7843570")
   bib_with_research_item = Bib.new("sierra-nypl", "17906651")
-  mixed_bib = Bib.new("sierra-nypl", "10036259")
   zero_item_bib = Bib.new("sierra-nypl", "12345678")
   deleted_bib = Bib.new('sierra-nypl', '19060447')
 
@@ -20,16 +19,13 @@ describe Bib do
     $platform_api = PlatformApiClient.new
     $nypl_core = NyplCore.new
     $logger = NyplLogFormatter.new(STDOUT, level: ENV['LOG_LEVEL'] || 'info')
-    $mixed_bib_ids = File.read('data/mixed-bibs.csv')
-    .split("\n")
-    .map { |bnum| bnum.strip.sub(/^b/, '').chop }
 
     KmsClient.aws_kms_client.stub_responses(:decrypt, -> (context) {
       # "Decrypt" by subbing "encrypted" with "decrypted" in string:
       { plaintext: context.params[:ciphertext_blob].gsub('encrypted', 'decrypted') }
     })
 
-    [bib_with_research_item, mixed_bib].each do |test_bib|
+    [bib_with_research_item].each do |test_bib|
       stub_request(:get,
         "#{ENV['PLATFORM_API_BASE_URL']}bibs/#{test_bib.nypl_source}/#{test_bib.id}/items").to_return(status: 200, body: File.read("./spec/fixtures/bib_items_#{test_bib.id}.json")
       )
@@ -72,10 +68,6 @@ describe Bib do
 
     it "should throw DeletedError for a deleted bib record" do
       expect { deleted_bib.is_research? }.to raise_error(DeletedError)
-    end
-
-    it "should declare a mixed bib as research" do
-      expect(mixed_bib.is_research?).to eq(true)
     end
   end
 end
