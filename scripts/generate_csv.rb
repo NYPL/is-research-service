@@ -27,7 +27,6 @@ def init
 
   $nypl_core = NyplCore.new
   $logger = NyplLogFormatter.new(STDOUT, level: 'info')
-  $mixed_bib_ids = nil
   @log_data = {}
 
   $initialized = true
