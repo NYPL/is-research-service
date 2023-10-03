@@ -6,7 +6,7 @@ class Bib < MarcRecord
   def is_research?
     result = false
     begin
-      result = is_partner? || is_mixed_bib? || first_item_is_research?
+      result = is_partner? || first_item_is_research?
     rescue NotFoundError => e
       bib = get_platform_api_data bib_path
       raise DeletedError if bib["deleted"]
@@ -20,12 +20,6 @@ class Bib < MarcRecord
   end
 
   private
-  def is_mixed_bib?
-    is_mixed_bib = $mixed_bib_ids.include? id
-    $logger.debug "Determined is_mixed_bib=#{is_mixed_bib} for #{id}"
-
-    is_mixed_bib
-  end
 
   def first_item_is_research?
     items = get_platform_api_data items_path
