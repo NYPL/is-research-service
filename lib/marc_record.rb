@@ -29,13 +29,17 @@ class MarcRecord
       return false
     end
     data["varFields"].each do |field|
-      if field["marcTag"] == "910" and field["subfields"] != nil
-        field["subfields"].each do |subfield|
-          if subfield["tag"] == "a" and (subfield["content"] == "RL" or subfield["content"] == "RLOTF")
-            return true
-          end
+
+      if field["marcTag"] != "910" or field["subfields"] == nil
+        next
+      end
+
+      field["subfields"].each do |subfield|
+        if subfield["tag"] == "a" and (subfield["content"] == "RL" or subfield["content"] == "RLOTF")
+          return true
         end
       end
+
     end
     return false
   end
