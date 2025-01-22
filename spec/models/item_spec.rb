@@ -31,6 +31,10 @@ describe Item do
     {
       item: Item.new("recap-hl", "232037775380003941"), # partner (HL) item
       result: true
+    },
+    {
+      item: Item.new("sierra-nypl", "F37314241"), # fake record with 901a field populated with RLOTF
+      result: true
     }
   ]
 
@@ -68,6 +72,11 @@ describe Item do
 
     it "should declare partner (hl) items as research" do
       test_item = test_items[7]
+      expect(test_item[:item].is_research?).to eq(test_item[:result])
+    end
+
+    it "should declare 901a RLOTF items as research" do
+      test_item = test_items[8]
       expect(test_item[:item].is_research?).to eq(test_item[:result])
     end
 

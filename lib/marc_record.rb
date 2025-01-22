@@ -23,4 +23,21 @@ class MarcRecord
 
     response["data"]
   end
+
+  def is_tagged_as_research?(data)
+    if data["varFields"] == nil
+        return false
+    end
+    data["varFields"].each do |field|
+      if field["marcTag"] == "910" and field["fieldTag"] == "a"
+        if field["subfields"] == nil or field["subfields"].empty?
+          next
+        end
+        if field["subfields"][0]["content"] == "RLOTF"
+          return true
+        end
+      end
+    end
+    return false
+  end
 end
