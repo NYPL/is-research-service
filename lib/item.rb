@@ -9,15 +9,20 @@ class Item < MarcRecord
     else
       # Fetch item data so can check Item Type and location
       data = get_platform_api_data(item_path) if data.nil?
-      validate_record(data)
 
-      set_properties(data)
-      item_type_check = item_type_is_research?
-      location_check = location_is_only_research?
+      if is_tagged_as_research?(data)
+        result = true
+      else
+        validate_record(data)
 
-      raise DataError.new("Result could not be determined") if item_type_check.nil? && location_check.nil?
+        set_properties(data)
+        item_type_check = item_type_is_research?
+        location_check = location_is_only_research?
 
-      result = item_type_check || location_check
+        raise DataError.new("Result could not be determined") if item_type_check.nil? && location_check.nil?
+
+        result = item_type_check || location_check
+      end
     end
 
     $logger.debug "Evaluating is-research for item #{nypl_source} #{id}: #{result}", @log_data
