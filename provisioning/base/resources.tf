@@ -51,11 +51,6 @@ resource "aws_lambda_function" "lambda_instance" {
   }
 
   environment {
-    variables = merge(
-      {
-        ENVIRONMENT = var.environment
-      },
-      var.env_vars
-    )
+    variables = var.env_vars
   }
 }

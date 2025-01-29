@@ -1,8 +1,11 @@
 name: Deploy QA
 
 on:
-  push:
-    branches: [ "qa" ]
+  workflow_run:
+    workflows: [Test Coverage]
+    branches: [qa]
+    types:
+      - completed
 
 jobs:
   deploy-qa:
@@ -10,7 +13,7 @@ jobs:
       id-token: write
       contents: read
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/qa'
+    if: ${{ github.event.workflow_run.conclusion == 'success' && github.event_name == 'push' && github.ref == 'refs/heads/qa' }}
     steps:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v3
