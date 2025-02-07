@@ -19,7 +19,7 @@ class Item < MarcRecord
         item_type_check = item_type_is_research?
         location_check = location_is_only_research?
 
-        raise DataError.new("Result could not be determined") if item_type_check.nil? && location_check.nil?
+        raise DataError.new("is_research result for #{nypl_source} #{id} could not be determined") if item_type_check.nil? && location_check.nil?
 
         result = item_type_check || location_check
       end
