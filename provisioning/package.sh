@@ -15,4 +15,4 @@ bundle install
 bundle install --deployment
 
 # Move required application files into build:
-zip -r build/lambda-deployment.zip app.rb lib vendor
+zip -r build/lambda-deployment.zip app.rb lib vendor swagger.json swagger.yaml
