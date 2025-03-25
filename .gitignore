@@ -3,3 +3,7 @@ vendor
 config
 coverage
 .bundle
+build
+
+# Local .terraform directories
+**/.terraform*

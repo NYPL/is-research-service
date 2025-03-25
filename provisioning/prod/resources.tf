@@ -1,0 +1,26 @@
+provider "aws" {
+  region     = "us-east-1"
+}
+
+terraform {
+  # Use s3 to store terraform state
+  backend "s3" {
+    bucket  = "nypl-github-actions-builds-production"
+    key     = "is-research-service-terraform-state"
+    region  = "us-east-1"
+  }
+}
+
+module "base" {
+  source = "../base"
+
+  environment = "production"
+
+  env_vars = {
+    "PLATFORM_API_BASE_URL" = "https://platform.nypl.org/api/v0.1/"
+    "NYPL_OAUTH_URL" = "https://isso.nypl.org/"
+    "NYPL_OAUTH_ID" = "AQECAHh7ea2tyZ6phZgT4B9BDKwguhlFtRC6hgt+7HbmeFsrsgAAAGswaQYJKoZIhvcNAQcGoFwwWgIBADBVBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDAJNGpqeEeETCmeurQIBEIAoz+HbpFuGMH/84X9UVisMtsRCo5lIguWzG6PGCf3Q97JMk6Dvo+AZeQ=="
+    "NYPL_OAUTH_SECRET" = "AQECAHh7ea2tyZ6phZgT4B9BDKwguhlFtRC6hgt+7HbmeFsrsgAAAIcwgYQGCSqGSIb3DQEHBqB3MHUCAQAwcAYJKoZIhvcNAQcBMB4GCWCGSAFlAwQBLjARBAwDTxUAqKkiCrdL90MCARCAQ8vxU5R+MEGRpWFPhktni6yfDNoecmxWlerXkaWk+ZUaPKdUlkTI1kDITaWnwf9VvR4N9XwGgKMLfWgM+sW72715eqc="
+    "NYPL_CORE_S3_BASE_URL" = "https://s3.amazonaws.com/nypl-core-objects-mapping-production/"
+  }
+}
