@@ -22,7 +22,7 @@ GEM
       rexml
     diff-lcs (1.5.1)
     docile (1.4.1)
-    dotenv (3.1.7)
+    dotenv (3.2.0)
     hashdiff (1.1.2)
     jmespath (1.6.2)
     method_source (1.1.0)
